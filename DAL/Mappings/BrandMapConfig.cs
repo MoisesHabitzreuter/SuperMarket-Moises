@@ -13,7 +13,6 @@ namespace DAL.Mappings
         {
             builder.ToTable("BRANDS");
             builder.Property(c => c.Name).HasMaxLength(20);
-            builder.
         }
     }
 

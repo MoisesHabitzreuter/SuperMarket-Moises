@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace DTO
@@ -16,7 +17,7 @@ namespace DTO
         public string Password { get; set; }
         public bool IsActive {get;set;} = true;
 
-        public ClientDTO(int id, string name, string email, string cpf, string rg, string hone, DateTime dateBirth, bool isActive, string password)
+        public ClientDTO(int id, string name, string email, string cpf, string rg, string hone, DateTime dateBirth, bool isActive)
         {
             this.ID = id;
             this.Name = name;
@@ -26,7 +27,6 @@ namespace DTO
             this.Phone = Phone;
             this.DateBirth = dateBirth;
             this.IsActive = isActive;
-            this.Password = password;
         }
     }
 }

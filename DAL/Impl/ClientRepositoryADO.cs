@@ -54,16 +54,12 @@ namespace DAL.Impl
                                        (string)reader["RG"],
                                        (string)reader["PHONE"],
                                        (DateTime)reader["DATEBIRTH"],
-                                       (bool)reader["ISACTIVE"],
-                                       (string)reader["PASSWORD"]);
+                                       (bool)reader["ISACTIVE"]);
 
                     //Adicionando o gênero na lista criada acima.
                     clients.Add(client);
                 }
-                DataResponse<ClientDTO> response = new DataResponse<ClientDTO>();
-                response.Success = true;
-                response.Data = clients;
-                return waresponse;
+                return clients;
             }
             catch (Exception ex)
             {
@@ -72,7 +68,7 @@ namespace DAL.Impl
                 DataResponse<ClientDTO> response = new DataResponse<ClientDTO>();
                 response.Success = false;
                 response.Errors.Add("Falha ao acessar o banco de dados, contate o suporte.");
-                return response;
+                return response.Data;
             }
             finally
             {
@@ -80,9 +76,9 @@ namespace DAL.Impl
             }
         }
 
-    }
 
-    public Task<List<ClientDTO>> GetClientsPage(int page, int size)
+
+        public Task<List<ClientDTO>> GetClientsPage(int page, int size)
         {
             throw new NotImplementedException();
         }
@@ -119,3 +115,4 @@ namespace DAL.Impl
         }
     }
 }
+
