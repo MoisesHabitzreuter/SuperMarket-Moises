@@ -13,17 +13,17 @@ namespace SuperMarketPresentationLayer.Controllers
 {
     public class ProductController : Controller
     {
-        private ICategoryService _categoryService;
-        public ProductController(ICategoryService categoryservice)
+        private readonly ICategoryService _categoryService;
+        private readonly IBrandService _brandService;
+        private readonly IProviderService _providerService;
+        private readonly IProductService _productService;
+        public ProductController(ICategoryService categoryservice, IBrandService brandService, IProviderService providerService, IProductService productService)
         {
             this._categoryService = categoryservice;
-        }
-        private IBrandService _brandService;
-        public ProductController(IBrandService brandService)
-        {
             this._brandService = brandService;
+            this._providerService = providerService;
+            this._productService = productService;
         }
-        ProviderService providerSvc = new ProviderService();
         
         public IActionResult Index()
         {
@@ -32,7 +32,7 @@ namespace SuperMarketPresentationLayer.Controllers
         public async Task<IActionResult> Insert()
         {
             ViewBag.Brands = await _brandService.GetBrands();
-            ViewBag.Provider = await providerSvc.GetProvider();
+            ViewBag.Provider = await _providerService.GetProvider();
             ViewBag.Category = await this._categoryService.GetCategory();
 
             return View();
@@ -52,7 +52,7 @@ namespace SuperMarketPresentationLayer.Controllers
             
             try
             {
-                await new ProductService().Insert(dto);
+                await _productService.Insert(dto);
                 return RedirectToAction("Index", "Category");
             }
             catch (Exception ex)

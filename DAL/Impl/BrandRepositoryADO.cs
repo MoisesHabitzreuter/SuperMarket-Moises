@@ -17,6 +17,12 @@ namespace DAL.Impl
         {
             this._options = options;
         }
+
+        public Task<List<BrandDTO>> GetBrands()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task Insert(BrandDTO brand)
         {
             SqlConnection connection = new SqlConnection();

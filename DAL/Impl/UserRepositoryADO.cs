@@ -16,6 +16,17 @@ namespace DAL.Impl
         {
             this._options = options;
         }
+
+        public Task<Response> Authenticate(string email, string passWord)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<UserDTO>> GetUsers()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task Insert(UserDTO user)
         {
             SqlConnection connection = new SqlConnection();

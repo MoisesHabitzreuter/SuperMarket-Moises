@@ -27,6 +27,16 @@ namespace DAL.Impl
             throw new NotImplementedException();
         }
 
+        public Task<List<ClientDTO>> GetClients()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<ClientDTO>> GetClientsPage(int page, int size)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task Insert(ClientDTO client)
         {
             SqlConnection connection = new SqlConnection();
