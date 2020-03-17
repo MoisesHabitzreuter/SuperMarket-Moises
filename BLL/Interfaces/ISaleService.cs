@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Interfaces
 {
-    interface ISaleService
+    public interface ISaleService
     {
         Task<Response> Insert(SaleDTO sale);
         Task<List<SaleDTO>> GetSales();

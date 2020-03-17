@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using BLL.Impl;
+using BLL.Interfaces;
 using DTO;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -18,7 +19,11 @@ namespace SuperMarketPresentationLayer.Controllers
     
     public class UserController : Controller
     {
-        UserService svc = new UserService();
+        private readonly IUserService _userService;
+        public UserController(IUserService userService)
+        {
+            this._userService = userService;
+        }
         public IActionResult Index()
         {
             return View();
@@ -27,15 +32,10 @@ namespace SuperMarketPresentationLayer.Controllers
         {
             return View();
         }
-        public IActionResult Login()
-        {
-            return View();
-        }
-        [HttpPost]
         public async Task<IActionResult> Login(string email, string passWord)
         {
 
-            if (await svc.Authenticate(email, passWord) != null)
+            if (await _userService.Authenticate(email, passWord) != null)
             {
                 var claims = new List<Claim>
                 {
@@ -54,9 +54,7 @@ namespace SuperMarketPresentationLayer.Controllers
             }
         }
 
-
-    
-    [HttpPost]
+        [HttpPost]
         public async Task<IActionResult> Insert(UserInsertViewModel viewmodel)
         {
             var configuration = new MapperConfiguration(cfg =>
@@ -67,11 +65,9 @@ namespace SuperMarketPresentationLayer.Controllers
             // new SERService().GetSERByID(4);
             //Transforma o ClienteInsertViewModel em um ClienteDTO
             UserDTO dto = mapper.Map<UserDTO>(viewmodel);
-
-           
             try
             {
-                await svc.Insert(dto);
+                await _userService.Insert(dto);
                 return RedirectToAction("Index", "Category");
             }
             catch (Exception ex)

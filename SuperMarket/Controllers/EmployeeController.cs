@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BLL.Impl;
+using BLL.Interfaces;
 using DTO;
 using Microsoft.AspNetCore.Mvc;
 using SuperMarketPresentationLayer.Models;
@@ -12,6 +13,11 @@ namespace SuperMarketPresentationLayer.Controllers
 {
     public class EmployeeController : Controller
     {
+        private readonly IEmployeeService _employeeService;
+        public EmployeeController(IEmployeeService employeeService)
+        {
+            this._employeeService = employeeService;
+        }
         public IActionResult Index()
         {
             return View();
@@ -31,11 +37,9 @@ namespace SuperMarketPresentationLayer.Controllers
             // new SERService().GetSERByID(4);
             //Transforma o ClienteInsertViewModel em um ClienteDTO
             EmployeeDTO dto = mapper.Map<EmployeeDTO>(viewModel);
-
-            EmployeeService svc = new EmployeeService();
             try
             {
-                await svc.Insert(dto);
+                await _employeeService.Insert(dto);
                 return RedirectToAction("Index", "Client");
             }
             catch (Exception ex)

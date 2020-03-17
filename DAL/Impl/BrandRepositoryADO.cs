@@ -28,8 +28,10 @@ namespace DAL.Impl
             SqlConnection connection = new SqlConnection();
             connection.ConnectionString = _options.ConnectionString;
             SqlCommand command = new SqlCommand();
-            command.CommandText = "INSERT INTO BRANDS (NAME) VALUES (@NAME); select scope_identity()";
+            command.CommandText = "INSERT INTO BRANDS (NAME, IsActive) VALUES (@NAME, @IsActive); select scope_identity()";
             command.Parameters.AddWithValue(@"NAME", brand.Name);
+            command.Parameters.AddWithValue(@"IsActive", brand.IsActive);
+
             command.Connection = connection;
             Response response = new Response();
             try

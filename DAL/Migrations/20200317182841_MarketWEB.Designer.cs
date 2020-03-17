@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(MarketContext))]
-    [Migration("20200314042206_SuperMarketWEB")]
-    partial class SuperMarketWEB
+    [Migration("20200317182841_MarketWEB")]
+    partial class MarketWEB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,6 +27,9 @@ namespace DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(20)")
@@ -74,6 +77,9 @@ namespace DAL.Migrations
                         .HasColumnType("nvarchar(70)")
                         .HasMaxLength(70);
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(45)")
@@ -119,6 +125,9 @@ namespace DAL.Migrations
 
                     b.Property<int>("Function")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -177,7 +186,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("SaleDTOID");
 
-                    b.ToTable("ItemsSaleDTO");
+                    b.ToTable("ItemSales");
                 });
 
             modelBuilder.Entity("DTO.ProductCategoryDTO", b =>
@@ -209,6 +218,9 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(40)")
                         .HasMaxLength(40);
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
@@ -248,6 +260,9 @@ namespace DAL.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("nvarchar(18)")
@@ -277,8 +292,8 @@ namespace DAL.Migrations
                     b.Property<int>("ClientDTOID")
                         .HasColumnType("int");
 
-                    b.Property<int>("EmployeeDTOID")
-                        .HasColumnType("int");
+                    b.Property<bool>("Finalizado")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("SaleDate")
                         .HasColumnType("date");
@@ -289,8 +304,6 @@ namespace DAL.Migrations
                     b.HasKey("ID");
 
                     b.HasIndex("ClientDTOID");
-
-                    b.HasIndex("EmployeeDTOID");
 
                     b.ToTable("SALES");
                 });
@@ -306,6 +319,9 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -378,12 +394,6 @@ namespace DAL.Migrations
                     b.HasOne("DTO.ClientDTO", "Client")
                         .WithMany()
                         .HasForeignKey("ClientDTOID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DTO.EmployeeDTO", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeDTOID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

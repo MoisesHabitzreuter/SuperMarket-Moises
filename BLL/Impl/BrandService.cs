@@ -14,7 +14,7 @@ namespace BLL.Impl
     public class BrandService : IBrandService
     {
         
-        private IBrandRepository _brandRepository;
+        private readonly IBrandRepository _brandRepository;
         public BrandService(IBrandRepository brandrepository)
         {
             

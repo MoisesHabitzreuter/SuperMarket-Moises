@@ -32,7 +32,7 @@ namespace SuperMarket
         {
             //services.AddTransient<//interface>
             services.AddTransient<IBrandService, BrandService>();
-            services.AddTransient<IBrandRepository, BrandRepository>();
+            services.AddTransient<IBrandRepository, BrandRepositoryADO>();
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<IClientService, ClientService>();

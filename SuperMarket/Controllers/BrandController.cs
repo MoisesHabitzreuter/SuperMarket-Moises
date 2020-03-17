@@ -13,7 +13,7 @@ namespace SuperMarketPresentationLayer.Controllers
 {
     public class BrandController : Controller
     {
-        private IBrandService _brandService;
+        private readonly IBrandService _brandService;
         public BrandController(IBrandService brandService)
         {
             this._brandService = brandService;

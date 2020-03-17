@@ -33,6 +33,7 @@ namespace DAL
         public DbSet<UserDTO> Users { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             LoadStringConfig(modelBuilder);
 

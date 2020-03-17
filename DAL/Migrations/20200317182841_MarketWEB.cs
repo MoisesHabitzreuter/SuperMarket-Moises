@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DAL.Migrations
 {
-    public partial class SuperMarketWEB : Migration
+    public partial class MarketWEB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,8 @@ namespace DAL.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(maxLength: 20, nullable: true)
+                    Name = table.Column<string>(maxLength: 20, nullable: true),
+                    IsActive = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -45,7 +46,8 @@ namespace DAL.Migrations
                     RG = table.Column<string>(maxLength: 9, nullable: false),
                     Phone = table.Column<string>(maxLength: 18, nullable: false),
                     DateBirth = table.Column<DateTime>(type: "date", nullable: false),
-                    Password = table.Column<string>(maxLength: 80, nullable: false)
+                    Password = table.Column<string>(maxLength: 80, nullable: false),
+                    IsActive = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -65,7 +67,8 @@ namespace DAL.Migrations
                     Phone = table.Column<string>(maxLength: 18, nullable: false),
                     DateBirth = table.Column<DateTime>(type: "date", nullable: false),
                     Password = table.Column<string>(maxLength: 100, nullable: false),
-                    Function = table.Column<int>(nullable: false)
+                    Function = table.Column<int>(nullable: false),
+                    IsActive = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -81,7 +84,8 @@ namespace DAL.Migrations
                     FantasyName = table.Column<string>(maxLength: 50, nullable: false),
                     Email = table.Column<string>(maxLength: 80, nullable: false),
                     CNPJ = table.Column<string>(fixedLength: true, maxLength: 18, nullable: false),
-                    Phone = table.Column<string>(maxLength: 18, nullable: false)
+                    Phone = table.Column<string>(maxLength: 18, nullable: false),
+                    IsActive = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -97,7 +101,8 @@ namespace DAL.Migrations
                     Email = table.Column<string>(maxLength: 100, nullable: false),
                     Password = table.Column<string>(maxLength: 100, nullable: false),
                     Name = table.Column<string>(maxLength: 45, nullable: false),
-                    Permissions = table.Column<int>(nullable: false)
+                    Permissions = table.Column<int>(nullable: false),
+                    IsActive = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -113,7 +118,7 @@ namespace DAL.Migrations
                     ClientDTOID = table.Column<int>(nullable: false),
                     SaleDate = table.Column<DateTime>(type: "date", nullable: false),
                     TotalPrice = table.Column<double>(nullable: false),
-                    EmployeeDTOID = table.Column<int>(nullable: false)
+                    Finalizado = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -122,12 +127,6 @@ namespace DAL.Migrations
                         name: "FK_SALES_CLIENTS_ClientDTOID",
                         column: x => x.ClientDTOID,
                         principalTable: "CLIENTS",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_SALES_EMPLOYEES_EmployeeDTOID",
-                        column: x => x.EmployeeDTOID,
-                        principalTable: "EMPLOYEES",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -141,7 +140,8 @@ namespace DAL.Migrations
                     Description = table.Column<string>(maxLength: 40, nullable: false),
                     BrandID = table.Column<int>(nullable: false),
                     ProviderID = table.Column<int>(nullable: false),
-                    Price = table.Column<double>(nullable: false)
+                    Price = table.Column<double>(nullable: false),
+                    IsActive = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -161,7 +161,7 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ItemsSaleDTO",
+                name: "ItemSales",
                 columns: table => new
                 {
                     ID = table.Column<int>(nullable: false)
@@ -172,15 +172,15 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ItemsSaleDTO", x => x.ID);
+                    table.PrimaryKey("PK_ItemSales", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_ItemsSaleDTO_PRODUCTS_ProductDTOID",
+                        name: "FK_ItemSales_PRODUCTS_ProductDTOID",
                         column: x => x.ProductDTOID,
                         principalTable: "PRODUCTS",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ItemsSaleDTO_SALES_SaleDTOID",
+                        name: "FK_ItemSales_SALES_SaleDTOID",
                         column: x => x.SaleDTOID,
                         principalTable: "SALES",
                         principalColumn: "ID",
@@ -230,13 +230,13 @@ namespace DAL.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ItemsSaleDTO_ProductDTOID",
-                table: "ItemsSaleDTO",
+                name: "IX_ItemSales_ProductDTOID",
+                table: "ItemSales",
                 column: "ProductDTOID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ItemsSaleDTO_SaleDTOID",
-                table: "ItemsSaleDTO",
+                name: "IX_ItemSales_SaleDTOID",
+                table: "ItemSales",
                 column: "SaleDTOID");
 
             migrationBuilder.CreateIndex(
@@ -278,11 +278,6 @@ namespace DAL.Migrations
                 column: "ClientDTOID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SALES_EmployeeDTOID",
-                table: "SALES",
-                column: "EmployeeDTOID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_USERS_Email",
                 table: "USERS",
                 column: "Email",
@@ -292,7 +287,10 @@ namespace DAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ItemsSaleDTO");
+                name: "EMPLOYEES");
+
+            migrationBuilder.DropTable(
+                name: "ItemSales");
 
             migrationBuilder.DropTable(
                 name: "PRODUCTS_CATEGORIES");
@@ -311,9 +309,6 @@ namespace DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "CLIENTS");
-
-            migrationBuilder.DropTable(
-                name: "EMPLOYEES");
 
             migrationBuilder.DropTable(
                 name: "BRANDS");

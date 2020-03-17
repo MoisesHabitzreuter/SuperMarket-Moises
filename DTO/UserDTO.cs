@@ -12,6 +12,6 @@ namespace DTO
         public string Password { get; set; }
         public string Name { get; set; }
         public Permissions Permissions { get; set; }
-        public bool IsActive {get;set;}
+        public bool IsActive { get; set; } = true;
     }
 }

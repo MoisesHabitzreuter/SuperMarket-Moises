@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BLL.Impl;
+using BLL.Interfaces;
 using DTO;
 using Microsoft.AspNetCore.Mvc;
 using SuperMarketPresentationLayer.Models;
@@ -12,6 +13,11 @@ namespace SuperMarketPresentationLayer.Controllers
 {
     public class SaleController : Controller
     {
+        private readonly ISaleService _saleService;
+        public SaleController(ISaleService saleService)
+        {
+            this._saleService = saleService;
+        }
         public IActionResult Index()
         {
             return View();
@@ -33,10 +39,9 @@ namespace SuperMarketPresentationLayer.Controllers
             //Transforma o ClienteInsertViewModel em um ClienteDTO
             SaleDTO dto = mapper.Map<SaleDTO>(viewmodel);
 
-            SaleService svc = new SaleService();
             try
             {
-                await svc.Insert(dto);
+                await _saleService.Insert(dto);
                 return RedirectToAction("Index", "Category");
             }
             catch (Exception ex)
