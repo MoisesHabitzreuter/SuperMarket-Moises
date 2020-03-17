@@ -1,6 +1,7 @@
 ﻿using Commom.Security;
 using DAL.Interfaces;
 using DTO;
+using DTO.Responses;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -27,12 +28,61 @@ namespace DAL.Impl
             throw new NotImplementedException();
         }
 
-        public Task<List<ClientDTO>> GetClients()
+        public async Task<List<ClientDTO>> GetClients()
         {
-            throw new NotImplementedException();
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString = _options.ConnectionString;
+            SqlCommand command = new SqlCommand();
+            command.CommandText = "SELECT * FROM BRANDS";
+            command.Connection = connection;
+
+            try
+            {
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                List<ClientDTO> clients = new List<ClientDTO>();
+                while (reader.Read())
+                {
+                    //Exemplo utilizando um cast, veloz, porém perigoso
+                    //em caso de migração de base
+                    //string nome = (string)reader["NAME"];
+                    //Criando um gênero pra representar o registro no banco
+                    ClientDTO client = new ClientDTO(Convert.ToInt32(reader["ID"]),
+                                       (string)reader["NAME"],
+                                       (string)reader["CPF"],
+                                       (string)reader["EMAIL"],
+                                       (string)reader["RG"],
+                                       (string)reader["PHONE"],
+                                       (DateTime)reader["DATEBIRTH"],
+                                       (bool)reader["ISACTIVE"],
+                                       (string)reader["PASSWORD"]);
+
+                    //Adicionando o gênero na lista criada acima.
+                    clients.Add(client);
+                }
+                DataResponse<ClientDTO> response = new DataResponse<ClientDTO>();
+                response.Success = true;
+                response.Data = clients;
+                return waresponse;
+            }
+            catch (Exception ex)
+            {
+                //Logar o erro pro adm do sistema ter acesso.
+                File.WriteAllText("log.txt", ex.Message);
+                DataResponse<ClientDTO> response = new DataResponse<ClientDTO>();
+                response.Success = false;
+                response.Errors.Add("Falha ao acessar o banco de dados, contate o suporte.");
+                return response;
+            }
+            finally
+            {
+                connection.Dispose();
+            }
         }
 
-        public Task<List<ClientDTO>> GetClientsPage(int page, int size)
+    }
+
+    public Task<List<ClientDTO>> GetClientsPage(int page, int size)
         {
             throw new NotImplementedException();
         }

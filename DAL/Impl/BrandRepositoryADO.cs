@@ -20,7 +20,6 @@ namespace DAL.Impl
 
         public Task<List<BrandDTO>> GetBrands()
         {
-            throw new NotImplementedException();
         }
 
         public async Task Insert(BrandDTO brand)
