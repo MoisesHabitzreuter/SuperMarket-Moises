@@ -14,5 +14,15 @@ namespace DTO
         public string Phone { get; set; }
         public virtual ICollection<ProductDTO> Products { get; set; }
         public bool IsActive {get;set;} = true;
+        public ProviderDTO(int id, string fantasyName, string email, string cnpj, string phone, bool isActive)
+        {
+            this.ID = id;
+            this.FantasyName = fantasyName;
+            this.Email = email;
+            this.CNPJ = cnpj;
+            this.Phone = phone;
+            this.IsActive = isActive;
+
+        }
     }
 }

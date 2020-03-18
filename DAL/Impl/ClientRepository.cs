@@ -29,5 +29,10 @@ namespace DAL.Impl
         {
             return await _context.Clients.ToListAsync();
         }
+
+        public Task Update(ClientDTO client)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

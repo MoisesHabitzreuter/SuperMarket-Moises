@@ -12,7 +12,11 @@ namespace DTO
         public string Name { get; set; }
         public virtual ICollection<ProductCategoryDTO> ProductCategory { get; set; }
 
-
+        public CategoryDTO(int id, string name)
+        {
+            this.ID = id;
+            this.Name = name;
+        }
 
     }
 }

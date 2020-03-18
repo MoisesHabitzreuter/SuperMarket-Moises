@@ -16,9 +16,7 @@ namespace DAL.Impl
         public BrandRepository(MarketContext context)
         {
             this._context = context;
-
         }
-
         public async Task<List<BrandDTO>> GetBrands()
         {
             return await _context.Brands.ToListAsync();

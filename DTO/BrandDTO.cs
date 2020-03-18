@@ -11,5 +11,11 @@ namespace DTO
         public string Name { get; set; }
         public ICollection<ProductDTO> Products { get; set; }
         public bool IsActive { get; set; } = true;
+        public BrandDTO(int id, string name, bool isActive)
+        {
+            this.ID = id;
+            this.Name = name;
+            this.IsActive = isActive;
+        }
     }
 }

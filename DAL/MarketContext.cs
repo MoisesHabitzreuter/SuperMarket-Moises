@@ -33,29 +33,7 @@ namespace DAL
         public DbSet<UserDTO> Users { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-            LoadStringConfig(modelBuilder);
-
-
-
-
             base.OnModelCreating(modelBuilder);
-
-        }
-        private void LoadStringConfig(ModelBuilder modelBuilder)
-        {
-            //Assembly assemblyDTO = Assembly.GetAssembly(typeof(BrandDTO));
-
-            //List<Type> types = assemblyDTO.GetTypes().Where(c => c.Namespace == "DTO").ToList();
-
-            //foreach (Type item in types)
-            //{
-            //    foreach (PropertyInfo propriedade in item.GetProperties().Where(c=> c.PropertyType == typeof(string)))
-            //    {
-            //        modelBuilder.Entity(item.Name).Property(propriedade.Name).IsRequired().IsUnicode(false);
-            //    }
-            //}
 
         }
     }

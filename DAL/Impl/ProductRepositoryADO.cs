@@ -9,33 +9,37 @@ using System.Threading.Tasks;
 
 namespace DAL.Impl
 {
-    public class CategoryRepositoryADO : ICategoryRepository
+    public class ProductRepositoryADO : IProductRepository
     {
         private readonly DbOptionsADO _options;
-        public CategoryRepositoryADO(DbOptionsADO options)
+        public ProductRepositoryADO(DbOptionsADO options)
         {
             this._options = options;
         }
-        public async Task<List<CategoryDTO>> GetCategories()
+        public async Task<List<ProductDTO>> GetProducts()
         {
             SqlConnection connection = new SqlConnection();
             connection.ConnectionString = _options.ConnectionString;
             SqlCommand command = new SqlCommand();
-            command.CommandText = "SELECT * FROM CATEGORIES";
+            command.CommandText = "SELECT * FROM PRODUCTS";
             command.Connection = connection;
+
             try
             {
                 await connection.OpenAsync();
                 SqlDataReader reader = command.ExecuteReader();
-                List<CategoryDTO> categories = new List<CategoryDTO>();
+                List<ProductDTO> products = new List<ProductDTO>();
                 while (reader.Read())
                 {
-                    CategoryDTO category = new CategoryDTO(Convert.ToInt32(reader["ID"]),
-                                       (string)reader["NAME"]);
-
-                    categories.Add(category);
+                    ProductDTO product = new ProductDTO(Convert.ToInt32(reader["ID"]),
+                                       (string)reader["DESCRIPTION"],
+                                       (int)reader["BRANDID"],
+                                       (int)reader["PROVIDERID"],
+                                       (double)reader["PRICE"],
+                                       (bool)reader["ISACTIVE"]);
+                    products.Add(product);
                 }
-                return categories;
+                return products;
             }
             catch (Exception ex)
             {
@@ -49,13 +53,17 @@ namespace DAL.Impl
         }
     
 
-        public async Task Insert(CategoryDTO category)
+        public async Task Insert(ProductDTO product)
         {
             SqlConnection connection = new SqlConnection();
             connection.ConnectionString = _options.ConnectionString;
             SqlCommand command = new SqlCommand();
-            command.CommandText = "INSERT INTO CATEGORIES (NAME) VALUES (@NAME); select scope_identity()";
-            command.Parameters.AddWithValue(@"NAME", category.Name);
+            command.CommandText = "INSERT INTO PRODUCTS (DESCRIPTION,BRANDID,PRODUCTCATEGORY,PROVIDERID,PRICE) VALUES (@DESCRIPTION,@BRANDID,@PRODUCTCATEGORY,@PRICE); select scope_identity()";
+            command.Parameters.AddWithValue(@"NAME", product.Description);
+            command.Parameters.AddWithValue(@"EMAIL", product.BrandID);
+            command.Parameters.AddWithValue(@"CPF", product.ProductCategory);
+            command.Parameters.AddWithValue(@"RG", product.ProviderID);
+            command.Parameters.AddWithValue(@"PHONE", product.Price);
             command.Connection = connection;
             Response response = new Response();
             try

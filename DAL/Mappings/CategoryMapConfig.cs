@@ -13,6 +13,7 @@ namespace DAL.Mappings
         {
             builder.ToTable("CATEGORIES");
             builder.Property(c => c.Name).IsRequired().HasMaxLength(30);
+            builder.HasIndex(c => c.Name).IsUnique(true);
         }
     }
 }

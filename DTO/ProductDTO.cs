@@ -16,6 +16,15 @@ namespace DTO
         public virtual ICollection<ProductCategoryDTO> ProductCategory { get; set; }
         public double Price { get; set; }
         public bool IsActive {get;set;} = true;
+        public ProductDTO(int id, string description, int brandID, int providerID, double price, bool isActive)
+        {
+            this.ID = id;
+            this.Description = description;
+            this.BrandID = brandID;
+            this.ProviderID = providerID;
+            this.Price = price;
+            this.IsActive = IsActive;
+        }
 
     }
 }

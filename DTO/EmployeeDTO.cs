@@ -18,5 +18,17 @@ namespace DTO
         public string Password { get; set; }
         public Function Function { get; set; }
         public bool IsActive {get;set;} = true;
+        public EmployeeDTO(int id, string email, string name, string cpf, string rg, string phone, DateTime dateBirth, Function function, bool isActive)
+        {
+            this.ID = id;
+            this.Name = name;
+            this.Email = email;
+            this.CPF = cpf;
+            this.RG = rg;
+            this.Phone = phone;
+            this.DateBirth = dateBirth;
+            this.Function = function;
+            this.IsActive = IsActive;
+        }
     }
 }

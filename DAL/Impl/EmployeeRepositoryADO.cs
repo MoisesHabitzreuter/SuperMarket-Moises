@@ -1,4 +1,6 @@
-﻿using DTO;
+﻿using DAL.Interfaces;
+using DTO;
+using DTO.Enums;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -8,13 +10,53 @@ using System.Threading.Tasks;
 
 namespace DAL.Impl
 {
-    public class EmployeeRepositoryADO
+    public class EmployeeRepositoryADO : IEmployeeRepository
     {
         private readonly DbOptionsADO _options;
         public EmployeeRepositoryADO(DbOptionsADO options)
         {
             this._options = options;
         }
+
+        public async Task<List<EmployeeDTO>> GetEmployees()
+        {
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString = _options.ConnectionString;
+            SqlCommand command = new SqlCommand();
+            command.CommandText = "SELECT * FROM EMPLOYEES";
+            command.Connection = connection;
+
+            try
+            {
+                await connection.OpenAsync();
+                SqlDataReader reader = command.ExecuteReader();
+                List<EmployeeDTO> employees = new List<EmployeeDTO>();
+                while (reader.Read())
+                {
+                    EmployeeDTO employee = new EmployeeDTO(Convert.ToInt32(reader["ID"]),
+                                       (string)reader["NAME"],
+                                       (string)reader["EMAIL"],
+                                       (string)reader["CPF"],
+                                       (string)reader["RG"],
+                                       (string)reader["PHONE"],
+                                       (DateTime)reader["DATEBIRTH"],
+                                       (Function)reader["FUNCTION"],
+                                       (bool)reader["ISACTIVE"]);
+                    employees.Add(employee);
+                }
+                return employees;
+            }
+            catch (Exception ex)
+            {
+                File.WriteAllText("log.txt", ex.Message);
+                return null;
+            }
+            finally
+            {
+                await connection.DisposeAsync();
+            }
+        }
+    
         public async Task Insert(EmployeeDTO employee)
         {
             SqlConnection connection = new SqlConnection();

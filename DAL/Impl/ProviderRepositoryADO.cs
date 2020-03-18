@@ -17,9 +17,39 @@ namespace DAL.Impl
             this._options = options;
         }
 
-        public Task<List<ProviderDTO>> GetProviders()
+        public async Task<List<ProviderDTO>> GetProviders()
         {
-            throw new NotImplementedException();
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString = _options.ConnectionString;
+            SqlCommand command = new SqlCommand();
+            command.CommandText = "SELECT * FROM PROVIDERS";
+            command.Connection = connection;
+            try
+            {
+                await connection.OpenAsync();
+                SqlDataReader reader = command.ExecuteReader();
+                List<ProviderDTO> providers = new List<ProviderDTO>();
+                while (reader.Read())
+                {
+                    ProviderDTO provider = new ProviderDTO(Convert.ToInt32(reader["ID"]),
+                                       (string)reader["NAMEFANTASY"],
+                                       (string)reader["EMAIL"],
+                                       (string)reader["CNPJ"],
+                                       (string)reader["PHONE"],
+                                       (bool)reader["ISACTIVE"]);
+                    providers.Add(provider);
+                }
+                return providers;
+            }
+            catch (Exception ex)
+            {
+                File.WriteAllText("log.txt", ex.Message);
+                return null;
+            }
+            finally
+            {
+                await connection.DisposeAsync();
+            }
         }
 
         public async Task Insert(ProviderDTO provider)

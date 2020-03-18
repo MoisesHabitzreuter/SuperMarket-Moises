@@ -18,10 +18,44 @@ namespace DAL.Impl
             this._options = options;
         }
 
-        public Task<List<BrandDTO>> GetBrands()
+        public async Task<List<BrandDTO>> GetBrands()
         {
-        }
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString = _options.ConnectionString;
+            SqlCommand command = new SqlCommand();
+            command.CommandText = "SELECT * FROM BRANDS";
+            command.Connection = connection;
+            try
+            {
+                await connection.OpenAsync();
+                SqlDataReader reader = command.ExecuteReader();
+                List<BrandDTO> brands = new List<BrandDTO>();
+                while (reader.Read())
+                {
+                    //Exemplo utilizando um cast, veloz, porém perigoso
+                    //em caso de migração de base
+                    //string nome = (string)reader["NAME"];
+                    //Criando um gênero pra representar o registro no banco
+                    BrandDTO brand = new BrandDTO(Convert.ToInt32(reader["ID"]),
+                                       (string)reader["NAME"],
+                                       (bool)reader["ISACTIVE"]);
 
+                    //Adicionando o gênero na lista criada acima.
+                    brands.Add(brand);
+                }
+                return brands;
+            }
+            catch (Exception ex)
+            {
+                //Logar o erro pro adm do sistema ter acesso.
+                File.WriteAllText("log.txt", ex.Message);
+                return null;
+            }
+            finally
+            {
+                connection.Dispose();
+            }
+        }
         public async Task Insert(BrandDTO brand)
         {
             SqlConnection connection = new SqlConnection();
