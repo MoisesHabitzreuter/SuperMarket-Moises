@@ -51,7 +51,11 @@ namespace DAL.Impl
                 await connection.DisposeAsync();
             }
         }
-    
+
+        public Task<List<ProductDTO>> GetProductsByPrice(double price)
+        {
+            throw new NotImplementedException();
+        }
 
         public async Task Insert(ProductDTO product)
         {

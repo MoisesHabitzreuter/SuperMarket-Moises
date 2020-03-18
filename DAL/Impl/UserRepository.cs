@@ -4,6 +4,7 @@ using DTO;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,6 +31,11 @@ namespace DAL.Impl
             }
             response.Success = true;
             return response;
+        }
+
+        public async Task GetUserByEmail(string email)
+        {
+            await this._context.Users.Where(c => c.Email == email).ToListAsync();
         }
 
         public async Task<List<UserDTO>> GetUsers()

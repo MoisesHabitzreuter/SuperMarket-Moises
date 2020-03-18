@@ -34,5 +34,10 @@ namespace DAL.Impl
         {
             throw new NotImplementedException();
         }
+
+        public async Task GetClientsByCPF(string cpf)
+        {
+            await _context.Clients.Where(c => c.CPF == cpf).ToListAsync();
+        }
     }
 }

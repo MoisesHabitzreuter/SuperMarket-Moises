@@ -17,6 +17,11 @@ namespace DAL.Impl
             this._options = options;
         }
 
+        public Task GetProviderByCNPJ(string cnpj)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<List<ProviderDTO>> GetProviders()
         {
             SqlConnection connection = new SqlConnection();

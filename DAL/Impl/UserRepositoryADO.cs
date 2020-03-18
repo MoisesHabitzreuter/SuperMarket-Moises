@@ -22,6 +22,11 @@ namespace DAL.Impl
             throw new NotImplementedException();
         }
 
+        public Task GetUserByEmail(string email)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<List<UserDTO>> GetUsers()
         {
             throw new NotImplementedException();

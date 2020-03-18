@@ -3,6 +3,7 @@ using DTO;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,17 +16,18 @@ namespace DAL.Impl
         {
             _context = context;
         }
-
+        public async Task GetProviderByCNPJ(string cnpj)
+        {
+             await this._context.Providers.Where(c => c.CNPJ == cnpj).ToListAsync();
+        }
         public async Task<List<ProviderDTO>> GetProviders()
         {
             return await this._context.Providers.ToListAsync();
         }
-
         public async Task Insert(ProviderDTO provider)
         {
             _context.Providers.Add(provider);
             await _context.SaveChangesAsync();
-            //kakaa
         }
     }
 }

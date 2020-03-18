@@ -57,6 +57,11 @@ namespace DAL.Impl
             }
         }
 
+        public Task GetClientsByCPF(string cpf)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<List<ClientDTO>> GetClientsPage(int page, int size)
         {
             throw new NotImplementedException();

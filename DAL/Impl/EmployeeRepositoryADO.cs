@@ -18,6 +18,11 @@ namespace DAL.Impl
             this._options = options;
         }
 
+        public Task GetEmployeeByCPF(string cpf)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<List<EmployeeDTO>> GetEmployees()
         {
             SqlConnection connection = new SqlConnection();

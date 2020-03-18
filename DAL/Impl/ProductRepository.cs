@@ -3,6 +3,7 @@ using DTO;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,6 +21,10 @@ namespace DAL.Impl
             return await _context.Products.ToListAsync();
         }
 
+        public async Task<List<ProductDTO>> GetProductsByPrice(double price)
+        {
+            return await _context.Products.Where(c => c.Price < price).ToListAsync();
+        }
         public Task Insert(ProductDTO product)
         {
             throw new NotImplementedException();
