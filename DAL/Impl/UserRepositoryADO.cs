@@ -130,8 +130,6 @@ namespace DAL.Impl
             command.Parameters.AddWithValue(@"EMAIL", user.Email);
             command.Parameters.AddWithValue(@"PASSWORD", user.Password);
             command.Parameters.AddWithValue(@"NAME", user.Name);
-            command.Parameters.AddWithValue(@"ID", user.ID);
-            command.Parameters.AddWithValue(@"ISACTIVE", user.IsActive);
 
 
 

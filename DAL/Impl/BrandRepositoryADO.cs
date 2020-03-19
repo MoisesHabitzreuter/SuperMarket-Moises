@@ -90,7 +90,6 @@ namespace DAL.Impl
             SqlCommand command = new SqlCommand();
             command.CommandText = "UPDATE BRANDS SET NAME = @NAME, ISACTIVE = @ISACTIVE WHERE ID = @ID";
             command.Parameters.AddWithValue(@"NAME", brand.Name);
-            command.Parameters.AddWithValue(@"ISACTIVE", brand.IsActive);
 
 
             Response response = new Response();

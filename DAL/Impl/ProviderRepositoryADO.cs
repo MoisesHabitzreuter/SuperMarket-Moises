@@ -163,8 +163,6 @@ namespace DAL.Impl
             command.Parameters.AddWithValue(@"FANTASYNAME", provider.FantasyName);
             command.Parameters.AddWithValue(@"EMAIL", provider.Email);
             command.Parameters.AddWithValue(@"PHONE", provider.Phone);
-            command.Parameters.AddWithValue(@"ID", provider.ID);
-            command.Parameters.AddWithValue(@"ISACTIVE", provider.IsActive);
 
 
         Response response = new Response();
