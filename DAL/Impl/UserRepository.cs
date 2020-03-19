@@ -48,5 +48,10 @@ namespace DAL.Impl
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
         }
+
+        public Task Update(UserDTO user)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

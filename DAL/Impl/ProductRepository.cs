@@ -34,5 +34,10 @@ namespace DAL.Impl
         {
             throw new NotImplementedException();
         }
+
+        public Task Update(ProductDTO product)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
