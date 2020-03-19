@@ -163,8 +163,6 @@ namespace DAL.Impl
             command.Parameters.AddWithValue(@"PROVIDER", product.Provider);
             command.Parameters.AddWithValue(@"BRAND", product.Brand);
             command.Parameters.AddWithValue(@"PRICE", product.Price);
-            command.Parameters.AddWithValue(@"ISACTIVE", product.IsActive);
-            command.Parameters.AddWithValue(@"ID", product.ID);
 
 
         Response response = new Response();

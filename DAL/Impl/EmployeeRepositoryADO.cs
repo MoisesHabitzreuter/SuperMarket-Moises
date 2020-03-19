@@ -185,8 +185,6 @@ namespace DAL.Impl
             command.Parameters.AddWithValue(@"PHONE", employee.Phone);
             command.Parameters.AddWithValue(@"DATEBIRTH", employee.DateBirth);
             command.Parameters.AddWithValue(@"PASSWORD", Password.HashPassword(employee.Password));
-            command.Parameters.AddWithValue(@"ID", employee.ID);
-            command.Parameters.AddWithValue(@"ISACTIVE", employee.IsActive);
 
 
             Response response = new Response();
