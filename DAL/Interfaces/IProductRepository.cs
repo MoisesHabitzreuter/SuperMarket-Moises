@@ -12,5 +12,6 @@ namespace DAL.Interfaces
         public Task<List<ProductDTO>> GetProducts();
         public Task<List<ProductDTO>> GetProductsByPrice(double price);
         public Task<List<ProductDTO>> GetProductsByBrand(BrandDTO brand);
+        public Task Update(ProductDTO product);
     }
 }

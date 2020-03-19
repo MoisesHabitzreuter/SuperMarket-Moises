@@ -153,5 +153,36 @@ namespace DAL.Impl
                 await connection.CloseAsync();
             }
         }
+
+        public async Task Update(ProviderDTO provider)
+        {
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString = _options.ConnectionString;
+            SqlCommand command = new SqlCommand();
+            command.CommandText = "UPDATE PROVIDERS SET FANTASYNAME = @FANTASYNAME, EMAIL = @EMAIL,CNPJ = @CNPJ PHONE = @PHONE, ISACTIVE = @ISACTIVE WHERE ID = @ID";
+            command.Parameters.AddWithValue(@"FANTASYNAME", provider.FantasyName);
+            command.Parameters.AddWithValue(@"EMAIL", provider.Email);
+            command.Parameters.AddWithValue(@"PHONE", provider.Phone);
+            command.Parameters.AddWithValue(@"ID", provider.ID);
+            command.Parameters.AddWithValue(@"ISACTIVE", provider.IsActive);
+
+
+        Response response = new Response();
+            try
+            {
+                await connection.OpenAsync();
+                int idGerado = Convert.ToInt32(command.ExecuteScalar());
+            }
+            catch (Exception ex)
+            {
+                response.Errors.Add("Erro no banco de dados, contate o administrador!");
+                File.WriteAllText("log.txt", ex.Message);
+            }
+            finally
+            {
+                await connection.CloseAsync();
+            }
+        }
+    }
     }
 }

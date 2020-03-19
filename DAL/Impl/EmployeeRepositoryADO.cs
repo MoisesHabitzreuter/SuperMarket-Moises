@@ -1,4 +1,5 @@
-﻿using DAL.Interfaces;
+﻿using Commom.Security;
+using DAL.Interfaces;
 using DTO;
 using DTO.Enums;
 using Microsoft.Data.SqlClient;
@@ -154,6 +155,40 @@ namespace DAL.Impl
             command.Parameters.AddWithValue(@"PASSWORD", employee.Password);
             command.Parameters.AddWithValue(@"FUNCTION", employee.Function);
             command.Connection = connection;
+            Response response = new Response();
+            try
+            {
+                await connection.OpenAsync();
+                int idGerado = Convert.ToInt32(command.ExecuteScalar());
+            }
+            catch (Exception ex)
+            {
+                response.Errors.Add("Erro no banco de dados, contate o administrador!");
+                File.WriteAllText("log.txt", ex.Message);
+            }
+            finally
+            {
+                await connection.CloseAsync();
+            }
+        }
+
+        public async Task Update(EmployeeDTO employee)
+        {
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString = _options.ConnectionString;
+            SqlCommand command = new SqlCommand();
+            command.CommandText = "UPDATE EMPLOYEES SET NOME = @NAME, EMAIL = @EMAIL, CPF = @CPF, RG = @RG, PHONE = @PHONE, DATEBIRTH = @DATEBIRTH, PASSWORD = @PASSWORD, ISACTIVE = @ISACTIVE WHERE ID = @ID";
+            command.Parameters.AddWithValue(@"NAME", employee.Name);
+            command.Parameters.AddWithValue(@"EMAIL", employee.Email);
+            command.Parameters.AddWithValue(@"CPF", employee.CPF);
+            command.Parameters.AddWithValue(@"RG", employee.RG);
+            command.Parameters.AddWithValue(@"PHONE", employee.Phone);
+            command.Parameters.AddWithValue(@"DATEBIRTH", employee.DateBirth);
+            command.Parameters.AddWithValue(@"PASSWORD", Password.HashPassword(employee.Password));
+            command.Parameters.AddWithValue(@"ID", employee.ID);
+            command.Parameters.AddWithValue(@"ISACTIVE", employee.IsActive);
+
+
             Response response = new Response();
             try
             {

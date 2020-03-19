@@ -13,6 +13,7 @@ namespace DAL.Interfaces
         public Task<EmployeeDTO> GetEmployeeByCPF(string cpf);
         public Task<EmployeeDTO> GetEmployeeByRG(string rg);
         public Task<EmployeeDTO> GetEmployeeByEmail(string email);
+        public Task Update(EmployeeDTO employee);
 
     }
 }

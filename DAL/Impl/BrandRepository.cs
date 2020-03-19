@@ -27,5 +27,10 @@ namespace DAL.Impl
             _context.Brands.Add(brand);
             await _context.SaveChangesAsync();
         }
+
+        public Task Update(BrandDTO brand)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

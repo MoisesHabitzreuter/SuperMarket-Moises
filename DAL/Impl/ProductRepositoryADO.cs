@@ -152,5 +152,36 @@ namespace DAL.Impl
                 await connection.CloseAsync();
             }
         }
+
+        public async Task Update(ProductDTO product)
+        {
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString = _options.ConnectionString;
+            SqlCommand command = new SqlCommand();
+            command.CommandText = "UPDATE PRODUCTS SET DESCRIPTION = @DESCRIPTION,PROVIDER = @PROVIDER,BRAND = @BRAND,PRICE = @PRICE, ISACTIVE = @ISACTIVE WHERE ID = @ID";
+            command.Parameters.AddWithValue(@"DESCRIPTION", product.Description);
+            command.Parameters.AddWithValue(@"PROVIDER", product.Provider);
+            command.Parameters.AddWithValue(@"BRAND", product.Brand);
+            command.Parameters.AddWithValue(@"PRICE", product.Price);
+            command.Parameters.AddWithValue(@"ISACTIVE", product.IsActive);
+            command.Parameters.AddWithValue(@"ID", product.ID);
+
+
+        Response response = new Response();
+            try
+            {
+                await connection.OpenAsync();
+                int idGerado = Convert.ToInt32(command.ExecuteScalar());
+            }
+            catch (Exception ex)
+            {
+                response.Errors.Add("Erro no banco de dados, contate o administrador!");
+                File.WriteAllText("log.txt", ex.Message);
+            }
+            finally
+            {
+                await connection.CloseAsync();
+            }
+        }
     }
 }

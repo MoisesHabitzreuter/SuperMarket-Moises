@@ -12,6 +12,7 @@ namespace DAL.Interfaces
         public Task<List<UserDTO>> GetUsers();
         public Task<Response> Authenticate(string email, string passWord);
         public Task<UserDTO> GetUserByEmail(string email);
+        public Task Update(UserDTO user);
 
     }
 }

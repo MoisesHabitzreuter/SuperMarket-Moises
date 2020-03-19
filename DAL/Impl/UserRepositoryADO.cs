@@ -120,5 +120,37 @@ namespace DAL.Impl
                 await connection.CloseAsync();
             }
         }
+
+        public async Task Update(UserDTO user)
+        {
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString = _options.ConnectionString;
+            SqlCommand command = new SqlCommand();
+            command.CommandText = "UPDATE USERS SET EMAIL = @EMAIL,PASSWORD = @PASSWORD, NAME = @NAME, ISACTIVE = @ISACTIVE WHERE ID = @ID";
+            command.Parameters.AddWithValue(@"EMAIL", user.Email);
+            command.Parameters.AddWithValue(@"PASSWORD", user.Password);
+            command.Parameters.AddWithValue(@"NAME", user.Name);
+            command.Parameters.AddWithValue(@"ID", user.ID);
+            command.Parameters.AddWithValue(@"ISACTIVE", user.IsActive);
+
+
+
+        Response response = new Response();
+            try
+            {
+                await connection.OpenAsync();
+                int idGerado = Convert.ToInt32(command.ExecuteScalar());
+            }
+            catch (Exception ex)
+            {
+                response.Errors.Add("Erro no banco de dados, contate o administrador!");
+                File.WriteAllText("log.txt", ex.Message);
+            }
+            finally
+            {
+                await connection.CloseAsync();
+            }
+        }
+    }
     }
 }
