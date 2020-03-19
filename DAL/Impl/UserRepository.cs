@@ -18,19 +18,12 @@ namespace DAL.Impl
             _context = context;
         }
 
-        public async Task<Response> Authenticate(string email, string passWord)
+        public async Task<UserDTO> Authenticate(string email, string passWord)
         {
-            UserDTO user = await _context.Users.FirstOrDefaultAsync(u => u.Email.Equals(email) && u.Password.Equals(Password.HashPassword(passWord))).ConfigureAwait(false);
-            Response response = new Response();
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email.Equals(email) && u.Password.Equals(Password.HashPassword(passWord))).ConfigureAwait(false);
+            
 
-            if (user == null)
-            {
-                response.Success = false;
-                response.Errors.Add("Usuario nao encontrado");
-                return response;
-            }
-            response.Success = true;
-            return response;
+           
         }
 
         public async Task<UserDTO> GetUserByEmail(string email)
