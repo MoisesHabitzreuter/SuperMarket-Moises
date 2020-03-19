@@ -22,7 +22,10 @@ namespace BLL.Impl
 
         public async Task<Response> Authenticate(string email, string passWord)
         {
-           return await this._userRepository.Authenticate(email, passWord);
+           await this._userRepository.Authenticate(email, passWord);
+            Response response = new Response();
+            response.Success = true;
+            return response;
         }
 
         public async Task<List<UserDTO>> GetUser()
