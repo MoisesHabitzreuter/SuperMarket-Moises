@@ -10,6 +10,6 @@ namespace DAL.Interfaces
     { 
         public Task Insert(BrandDTO brand);
         public Task<List<BrandDTO>> GetBrands();
-        public Task Update(BrandDTO brand);
+        
     }
 }

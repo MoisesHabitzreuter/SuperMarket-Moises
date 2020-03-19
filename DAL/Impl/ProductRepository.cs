@@ -30,14 +30,16 @@ namespace DAL.Impl
         {
             return await _context.Products.Where(c => c.Price < price).ToListAsync();
         }
-        public Task Insert(ProductDTO product)
+        public async Task Insert(ProductDTO product)
         {
-            throw new NotImplementedException();
+            _context.Products.Add(product);
+            await _context.SaveChangesAsync();
         }
 
-        public Task Update(ProductDTO product)
+        public async Task Update(ProductDTO product)
         {
-            throw new NotImplementedException();
+             _context.Products.Update(product);
+            await _context.SaveChangesAsync();
         }
     }
 }

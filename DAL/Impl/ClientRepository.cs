@@ -30,9 +30,10 @@ namespace DAL.Impl
             return await _context.Clients.ToListAsync();
         }
 
-        public Task Update(ClientDTO client)
+        public async Task Update(ClientDTO client)
         {
-            throw new NotImplementedException();
+            _context.Clients.Update(client);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<ClientDTO> GetClientsByCPF(string cpf)

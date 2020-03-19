@@ -83,31 +83,7 @@ namespace DAL.Impl
 
         }
 
-        public async Task Update(BrandDTO brand)
-        {
-            SqlConnection connection = new SqlConnection();
-            connection.ConnectionString = _options.ConnectionString;
-            SqlCommand command = new SqlCommand();
-            command.CommandText = "UPDATE BRANDS SET NAME = @NAME, ISACTIVE = @ISACTIVE WHERE ID = @ID";
-            command.Parameters.AddWithValue(@"NAME", brand.Name);
-
-
-            Response response = new Response();
-            try
-            {
-                await connection.OpenAsync();
-                int idGerado = Convert.ToInt32(command.ExecuteScalar());
-            }
-            catch (Exception ex)
-            {
-                response.Errors.Add("Erro no banco de dados, contate o administrador!");
-                File.WriteAllText("log.txt", ex.Message);
-            }
-            finally
-            {
-                await connection.CloseAsync();
-            }
-        }
+        
     }
 
 }

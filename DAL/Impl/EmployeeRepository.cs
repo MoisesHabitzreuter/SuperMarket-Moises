@@ -44,9 +44,10 @@ namespace DAL.Impl
             await _context.SaveChangesAsync();
         }
 
-        public Task Update(EmployeeDTO employee)
+        public async Task Update(EmployeeDTO employee)
         {
-            throw new NotImplementedException();
+            _context.Employees.Update(employee);
+            await _context.SaveChangesAsync();
         }
     }
 }

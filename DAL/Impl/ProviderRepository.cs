@@ -36,9 +36,10 @@ namespace DAL.Impl
             await _context.SaveChangesAsync();
         }
 
-        public Task Update(ProviderDTO provider)
+        public async Task Update(ProviderDTO provider)
         {
-            throw new NotImplementedException();
+            _context.Providers.Update(provider);
+            await _context.SaveChangesAsync();
         }
     }
 }
