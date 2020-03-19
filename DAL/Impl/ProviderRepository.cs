@@ -16,10 +16,16 @@ namespace DAL.Impl
         {
             _context = context;
         }
-        public async Task GetProviderByCNPJ(string cnpj)
+        public async Task<ProviderDTO> GetProviderByCNPJ(string cnpj)
         {
-             await this._context.Providers.Where(c => c.CNPJ == cnpj).ToListAsync();
+             return await this._context.Providers.FirstOrDefaultAsync(c => c.CNPJ == cnpj);
         }
+
+        public async Task<ProviderDTO> GetProviderByEmail(string email)
+        {
+            return await this._context.Providers.FirstOrDefaultAsync(c => c.Email == email);
+        }
+
         public async Task<List<ProviderDTO>> GetProviders()
         {
             return await this._context.Providers.ToListAsync();

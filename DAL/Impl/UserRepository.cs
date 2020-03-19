@@ -33,9 +33,9 @@ namespace DAL.Impl
             return response;
         }
 
-        public async Task GetUserByEmail(string email)
+        public async Task<UserDTO> GetUserByEmail(string email)
         {
-            await this._context.Users.Where(c => c.Email == email).ToListAsync();
+            return await _context.Users.FirstOrDefaultAsync(c => c.Email == email);
         }
 
         public async Task<List<UserDTO>> GetUsers()

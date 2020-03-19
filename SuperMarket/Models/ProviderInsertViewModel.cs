@@ -14,6 +14,7 @@ namespace SuperMarketPresentationLayer.Models
         public string FantasyName { get; set; }
         [Required(ErrorMessage = "O Email do fornecedor deve ser informado")]
         [StringLength(maximumLength: 70, ErrorMessage = "O Email do fornecedor deve conter entre 10 e 70 caracteres", MinimumLength = 10)]
+        [EmailAddress(ErrorMessage = "formato de email incorreto")]
         public string Email { get; set; }
         [Required(ErrorMessage = "O CNPJ do fornecedor deve ser informado")]
         public string CNPJ { get; set; }

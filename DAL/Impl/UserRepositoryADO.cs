@@ -1,5 +1,6 @@
 ﻿using DAL.Interfaces;
 using DTO;
+using DTO.Enums;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -22,14 +23,74 @@ namespace DAL.Impl
             throw new NotImplementedException();
         }
 
-        public Task GetUserByEmail(string email)
+        public async Task<UserDTO> GetUserByEmail(string email)
         {
-            throw new NotImplementedException();
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString = _options.ConnectionString;
+            SqlCommand command = new SqlCommand();
+            command.CommandText = "SELECT * FROM USERS WHERE EMAIL LIKE @EMAIL";
+            command.Connection = connection;
+            try
+            {
+                await connection.OpenAsync();
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    UserDTO user = new UserDTO(Convert.ToInt32(reader["ID"]),
+                                       (string)reader["NAME"],
+                                       (string)reader["EMAIL"],
+                                       (Permissions)reader["PERMISSIONS"],
+                                       (bool)reader["ISACTIVE"]);
+                    return user;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                File.WriteAllText("log.txt", ex.Message);
+                return null;
+            }
+            finally
+            {
+                await connection.DisposeAsync();
+            }
         }
 
-        public Task<List<UserDTO>> GetUsers()
+        public async Task<List<UserDTO>> GetUsers()
         {
-            throw new NotImplementedException();
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString = _options.ConnectionString;
+            SqlCommand command = new SqlCommand();
+            command.CommandText = "SELECT * FROM USERS";
+            command.Connection = connection;
+            try
+            {
+                await connection.OpenAsync();
+                SqlDataReader reader = command.ExecuteReader();
+                List<UserDTO> users = new List<UserDTO>();
+                while (reader.Read())
+                {
+                    UserDTO user = new UserDTO(Convert.ToInt32(reader["ID"]),
+                                       (string)reader["NAME"],
+                                       (string)reader["EMAIL"],
+                                       (Permissions)reader["PERMISSIONS"],
+                                       (bool)reader["ISACTIVE"]);
+                    users.Add(user);
+                }
+                return users;
+            }
+            catch (Exception ex)
+            {
+                File.WriteAllText("log.txt", ex.Message);
+                return null;
+            }
+            finally
+            {
+                await connection.DisposeAsync();
+            }
         }
 
         public async Task Insert(UserDTO user)

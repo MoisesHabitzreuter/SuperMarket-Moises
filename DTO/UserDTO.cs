@@ -14,5 +14,13 @@ namespace DTO
         public string Name { get; set; }
         public Permissions Permissions { get; set; }
         public bool IsActive { get; set; } = true;
+        public UserDTO(int id, string name, string email,Permissions permissions, bool isActive)
+        {
+            this.ID = id;
+            this.Name = name;
+            this.Email = email;
+            this.Permissions = permissions;
+            this.IsActive = isActive;
+        }
     }
 }

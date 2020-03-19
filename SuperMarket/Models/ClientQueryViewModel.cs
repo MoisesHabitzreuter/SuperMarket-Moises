@@ -14,6 +14,7 @@ namespace SuperMarketPresentationLayer.Models
         public string Name { get; set; }
         [Required(ErrorMessage = "O email do cliente deve ser informado")]
         [StringLength(maximumLength: 70, ErrorMessage = "O Email deve conter entre 10 e 70 caracteres", MinimumLength = 10)]
+        [EmailAddress(ErrorMessage = "formato de email incorreto")]
         public string Email { get; set; }
         [Required(ErrorMessage = "O CPF do cliente deve ser informado")]
         public string CPF { get; set; }

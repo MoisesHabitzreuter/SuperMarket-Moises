@@ -57,14 +57,31 @@ namespace DAL.Impl
             }
         }
 
-        public Task GetClientsByCPF(string cpf)
+        public async Task<ClientDTO> GetClientsByCPF(string cpf)
         {
-            throw new NotImplementedException();
-        }
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString = _options.ConnectionString;
+            SqlCommand command = new SqlCommand();
+            command.CommandText = "SELECT * FROM CLIENTS WHERE CPF LIKE @CPF";
+            command.Connection = connection;
+            SqlDataReader reader = command.ExecuteReader();
+            if (await reader.ReadAsync())
+            {
+                ClientDTO client = new ClientDTO(Convert.ToInt32(reader["ID"]),
+                      (string)reader["NAME"],
+                      (string)reader["CPF"],
+                      (string)reader["EMAIL"],
+                      (string)reader["RG"],
+                      (string)reader["PHONE"],
+                      (DateTime)reader["DATEBIRTH"],
+                      (bool)reader["ISACTIVE"]);
 
-        public Task<List<ClientDTO>> GetClientsPage(int page, int size)
-        {
-            throw new NotImplementedException();
+               return client;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public async Task Insert(ClientDTO client)
@@ -119,7 +136,7 @@ namespace DAL.Impl
                 await connection.OpenAsync();
                 int idGerado = Convert.ToInt32(command.ExecuteScalar());
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 response.Errors.Add("Erro no banco de dados, contate o administrador!");
                 File.WriteAllText("log.txt", ex.Message);
@@ -129,6 +146,11 @@ namespace DAL.Impl
                 await connection.CloseAsync();
             }
         }
-    }
+
+        Task<List<ClientDTO>> IClientRepository.GetClientsPage(int page, int size)
+        {
+            throw new NotImplementedException();
+        }
+    } 
 }
 

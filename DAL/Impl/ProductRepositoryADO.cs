@@ -52,9 +52,76 @@ namespace DAL.Impl
             }
         }
 
-        public Task<List<ProductDTO>> GetProductsByPrice(double price)
+        public async Task<List<ProductDTO>> GetProductsByBrand(BrandDTO brand)
         {
-            throw new NotImplementedException();
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString = _options.ConnectionString;
+            SqlCommand command = new SqlCommand();
+            command.CommandText = "SELECT * FROM PRODUCTS WHERE BRANDID LIKE @BRANDID";
+            command.Connection = connection;
+
+            try
+            {
+                await connection.OpenAsync();
+                SqlDataReader reader = command.ExecuteReader();
+                List<ProductDTO> products = new List<ProductDTO>();
+                while (reader.Read())
+                {
+                    ProductDTO product = new ProductDTO(Convert.ToInt32(reader["ID"]),
+                                       (string)reader["DESCRIPTION"],
+                                       (int)reader["BRANDID"],
+                                       (int)reader["PROVIDERID"],
+                                       (double)reader["PRICE"],
+                                       (bool)reader["ISACTIVE"]);
+                    products.Add(product);
+                }
+                return products;
+            }
+            catch (Exception ex)
+            {
+                File.WriteAllText("log.txt", ex.Message);
+                return null;
+            }
+            finally
+            {
+                await connection.DisposeAsync();
+            }
+        }
+
+        public async Task<List<ProductDTO>> GetProductsByPrice(double price)
+        {
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString = _options.ConnectionString;
+            SqlCommand command = new SqlCommand();
+            command.CommandText = "SELECT * FROM PRODUCTS WHERE PRICE LIKE @PRICE";
+            command.Connection = connection;
+
+            try
+            {
+                await connection.OpenAsync();
+                SqlDataReader reader = command.ExecuteReader();
+                List<ProductDTO> products = new List<ProductDTO>();
+                while (reader.Read())
+                {
+                    ProductDTO product = new ProductDTO(Convert.ToInt32(reader["ID"]),
+                                       (string)reader["DESCRIPTION"],
+                                       (int)reader["BRANDID"],
+                                       (int)reader["PROVIDERID"],
+                                       (double)reader["PRICE"],
+                                       (bool)reader["ISACTIVE"]);
+                    products.Add(product);
+                }
+                return products;
+            }
+            catch (Exception ex)
+            {
+                File.WriteAllText("log.txt", ex.Message);
+                return null;
+            }
+            finally
+            {
+                await connection.DisposeAsync();
+            }
         }
 
         public async Task Insert(ProductDTO product)

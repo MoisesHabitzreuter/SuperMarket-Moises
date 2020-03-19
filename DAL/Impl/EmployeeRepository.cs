@@ -17,9 +17,19 @@ namespace DAL.Impl
             _context = context;
         }
 
-        public async Task GetEmployeeByCPF(string cpf)
+        public async Task<EmployeeDTO> GetEmployeeByCPF(string cpf)
         {
-             await _context.Employees.Where(c => c.CPF == cpf).ToListAsync();
+             return await _context.Employees.FirstOrDefaultAsync(c => c.CPF == cpf);
+        }
+
+        public async Task<EmployeeDTO> GetEmployeeByEmail(string email)
+        {
+            return await _context.Employees.FirstOrDefaultAsync(c => c.Email == email);
+        }
+
+        public async Task<EmployeeDTO> GetEmployeeByRG(string rg)
+        {
+            return await _context.Employees.FirstOrDefaultAsync(c => c.RG == rg);
         }
 
         public async Task<List<EmployeeDTO>> GetEmployees()

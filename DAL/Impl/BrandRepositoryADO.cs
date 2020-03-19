@@ -17,7 +17,6 @@ namespace DAL.Impl
         {
             this._options = options;
         }
-
         public async Task<List<BrandDTO>> GetBrands()
         {
             SqlConnection connection = new SqlConnection();

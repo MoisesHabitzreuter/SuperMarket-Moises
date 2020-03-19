@@ -17,5 +17,10 @@ namespace DTO
             this.Name = name;
             this.IsActive = isActive;
         }
+        public BrandDTO(int id, bool isActive)
+        {
+            this.ID = id;
+            this.IsActive = isActive;
+        }
     }
 }

@@ -17,9 +17,78 @@ namespace DAL.Impl
             this._options = options;
         }
 
-        public Task GetProviderByCNPJ(string cnpj)
+        public async Task<ProviderDTO> GetProviderByCNPJ(string cnpj)
         {
-            throw new NotImplementedException();
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString = _options.ConnectionString;
+            SqlCommand command = new SqlCommand();
+            command.CommandText = "SELECT * FROM PROVIDERS WHERE CNPJ LIKE @CNPJ";
+            command.Connection = connection;
+            try
+            {
+                await connection.OpenAsync();
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    ProviderDTO provider = new ProviderDTO(Convert.ToInt32(reader["ID"]),
+                                       (string)reader["NAMEFANTASY"],
+                                       (string)reader["EMAIL"],
+                                       (string)reader["CNPJ"],
+                                       (string)reader["PHONE"],
+                                       (bool)reader["ISACTIVE"]);
+                    return provider;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                File.WriteAllText("log.txt", ex.Message);
+                return null;
+            }
+            finally
+            {
+                await connection.DisposeAsync();
+            }
+        }
+
+        public async Task<ProviderDTO> GetProviderByEmail(string email)
+        {
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString = _options.ConnectionString;
+            SqlCommand command = new SqlCommand();
+            command.CommandText = "SELECT * FROM PROVIDERS WHERE EMAIL LIKE @EMAIL";
+            command.Connection = connection;
+            try
+            {
+                await connection.OpenAsync();
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    ProviderDTO provider = new ProviderDTO(Convert.ToInt32(reader["ID"]),
+                                       (string)reader["NAMEFANTASY"],
+                                       (string)reader["EMAIL"],
+                                       (string)reader["CNPJ"],
+                                       (string)reader["PHONE"],
+                                       (bool)reader["ISACTIVE"]);
+                    return provider;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                File.WriteAllText("log.txt", ex.Message);
+                return null;
+            }
+            finally
+            {
+                await connection.DisposeAsync();
+            }
         }
 
         public async Task<List<ProviderDTO>> GetProviders()

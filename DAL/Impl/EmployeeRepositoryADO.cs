@@ -17,10 +17,87 @@ namespace DAL.Impl
         {
             this._options = options;
         }
-
-        public Task GetEmployeeByCPF(string cpf)
+        public async Task<EmployeeDTO> GetEmployeeByCPF(string cpf)
         {
-            throw new NotImplementedException();
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString = _options.ConnectionString;
+            SqlCommand command = new SqlCommand();
+            command.CommandText = "SELECT * FROM CLIENTS WHERE CPF LIKE @CPF";
+            command.Connection = connection;
+            SqlDataReader reader = command.ExecuteReader();
+            if (await reader.ReadAsync())
+            {
+                EmployeeDTO client = new EmployeeDTO(Convert.ToInt32(reader["ID"]),
+                      (string)reader["NAME"],
+                      (string)reader["CPF"],
+                      (string)reader["EMAIL"],
+                      (string)reader["RG"],
+                      (string)reader["PHONE"],
+                      (DateTime)reader["DATEBIRTH"],
+                      (Function)reader["FUNCTION"],
+                      (bool)reader["ISACTIVE"]);
+                return client;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public async Task<EmployeeDTO> GetEmployeeByEmail(string email)
+        {
+
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString = _options.ConnectionString;
+            SqlCommand command = new SqlCommand();
+            command.CommandText = "SELECT * FROM CLIENTS WHERE EMAIL LIKE @EMAIL";
+            command.Connection = connection;
+            SqlDataReader reader = command.ExecuteReader();
+            if (await reader.ReadAsync())
+            {
+                EmployeeDTO client = new EmployeeDTO(Convert.ToInt32(reader["ID"]),
+                      (string)reader["NAME"],
+                      (string)reader["CPF"],
+                      (string)reader["EMAIL"],
+                      (string)reader["RG"],
+                      (string)reader["PHONE"],
+                      (DateTime)reader["DATEBIRTH"],
+                      (Function)reader["FUNCTION"],
+                      (bool)reader["ISACTIVE"]);
+                return client;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public async Task<EmployeeDTO> GetEmployeeByRG(string rg)
+        {
+
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString = _options.ConnectionString;
+            SqlCommand command = new SqlCommand();
+            command.CommandText = "SELECT * FROM CLIENTS WHERE RG LIKE @RG";
+            command.Connection = connection;
+            SqlDataReader reader = command.ExecuteReader();
+            if (await reader.ReadAsync())
+            {
+                EmployeeDTO client = new EmployeeDTO(Convert.ToInt32(reader["ID"]),
+                      (string)reader["NAME"],
+                      (string)reader["CPF"],
+                      (string)reader["EMAIL"],
+                      (string)reader["RG"],
+                      (string)reader["PHONE"],
+                      (DateTime)reader["DATEBIRTH"],
+                      (Function)reader["FUNCTION"],
+                      (bool)reader["ISACTIVE"]);
+                return client;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public async Task<List<EmployeeDTO>> GetEmployees()

@@ -10,7 +10,9 @@ namespace DAL.Interfaces
     {
         public Task Insert(EmployeeDTO employee);
         public Task<List<EmployeeDTO>> GetEmployees();
-        public Task GetEmployeeByCPF(string cpf);
+        public Task<EmployeeDTO> GetEmployeeByCPF(string cpf);
+        public Task<EmployeeDTO> GetEmployeeByRG(string rg);
+        public Task<EmployeeDTO> GetEmployeeByEmail(string email);
 
     }
 }
