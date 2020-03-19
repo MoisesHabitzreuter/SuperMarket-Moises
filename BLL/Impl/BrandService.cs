@@ -48,7 +48,7 @@ namespace BLL.Impl
              return await _brandRepository.GetBrands();
         }
 
-        Task<Response> IBrandService.GetBrands()
+        Task<Response> IBrandService.GetBrands(BrandDTO dto)
         {
             throw new NotImplementedException();
         }

@@ -26,6 +26,87 @@ namespace SuperMarketPresentationLayer.Controllers
         {
             return View();
         }
+        public IActionResult Buscarporcpf()
+        {
+            return View();
+        }
+        public async Task<IActionResult> Buscarporcpf(EmployeeQueryViewModel viewmodel)
+        {
+            List<EmployeeDTO> employees = await this._employeeService.GetEmployeeByCPF();
+
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<EmployeeDTO, EmployeeQueryViewModel>();
+            });
+            IMapper mapper = configuration.CreateMapper();
+            // new SERService().GetSERByID(4);
+            //Transforma o ClienteInsertViewModel em um ClienteDTO
+            List<EmployeeQueryViewModel> employeeviewmodel =
+                mapper.Map<List<EmployeeQueryViewModel>>(employees);
+            ViewBag.Employees = employeeviewmodel;
+            return View();
+        }
+        public IActionResult Buscarporrg()
+        {
+            return View();
+        }
+        public async Task<IActionResult> Buscarporrg(EmployeeQueryViewModel viewmodel)
+        {
+            List<EmployeeDTO> employees = await this._employeeService.GetEmployeeByRG();
+
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<EmployeeDTO, EmployeeQueryViewModel>();
+            });
+            IMapper mapper = configuration.CreateMapper();
+            // new SERService().GetSERByID(4);
+            //Transforma o ClienteInsertViewModel em um ClienteDTO
+            List<EmployeeQueryViewModel> employeeviewmodel =
+                mapper.Map<List<EmployeeQueryViewModel>>(employees);
+            ViewBag.Employees = employeeviewmodel;
+            return View();
+        }
+        public IActionResult Buscarporemail()
+        {
+            return View();
+        }
+        public async Task<IActionResult> Buscarporemail(EmployeeQueryViewModel viewmodel)
+        {
+            List<EmployeeDTO> employees = await this._employeeService.GetEmployeeByEmail();
+
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<EmployeeDTO, EmployeeQueryViewModel>();
+            });
+            IMapper mapper = configuration.CreateMapper();
+            // new SERService().GetSERByID(4);
+            //Transforma o ClienteInsertViewModel em um ClienteDTO
+            List<EmployeeQueryViewModel> employeeviewmodel =
+                mapper.Map<List<EmployeeQueryViewModel>>(employees);
+            ViewBag.Employees = employeeviewmodel;
+            return View();
+        }
+        public IActionResult Buscar()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Buscar(EmployeeQueryViewModel viewmodel)
+        {
+            List<EmployeeDTO> employees = await this._employeeService.GetEmployee();
+
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<EmployeeDTO, EmployeeQueryViewModel>();
+            });
+            IMapper mapper = configuration.CreateMapper();
+            // new SERService().GetSERByID(4);
+            //Transforma o ClienteInsertViewModel em um ClienteDTO
+            List<EmployeeQueryViewModel> employeeviewmodel =
+                mapper.Map<List<EmployeeQueryViewModel>>(employees);
+            ViewBag.Employees = employeeviewmodel;
+            return View();
+        }
         [HttpPost]
         public async Task<IActionResult> Insert(EmployeeInsertViewModel viewModel)
         {
