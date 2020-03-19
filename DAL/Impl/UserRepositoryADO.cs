@@ -20,8 +20,53 @@ namespace DAL.Impl
 
         public Task<Response> Authenticate(string email, string passWord)
         {
-            throw new NotImplementedException();
-        }
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString = _options.ConnectionString;
+            SqlCommand command = new SqlCommand();
+            command.Connection = connection;
+
+            command.CommandText = "SELECT * FROM USERS WHERE EMAIL = @EMAIL AND PASSWORD = @PASSWORD";
+            command.Parameters.AddWithValue("@EMAIL", email);
+            command.Parameters.AddWithValue("@PASSWORD", passWord);
+
+            try
+            {
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    //Se entrou aqui, encontramos o usuario no banco!
+                    UserDTO user = new UserDTO();
+                    user.ID = (int)reader["ID"];
+                    user.Permissions = (enum)reader["PERMISSIONS"];
+                    user.CPF = (string)reader["CPF"];
+                    user.Email = email;
+                    funcionario.DataNascimento = (DateTime)reader["DATANASCIMENTO"];
+                    funcionario.Telefone = (string)reader["TELEFONE"];
+                    List<Funcionario> funcionarios = new List<Funcionario>();
+                    funcionarios.Add(funcionario);
+                    response.Data = funcionarios;
+                    response.Sucesso = true;
+                    return response;
+                }
+                //Se chegou aqui, usuário digitou email/senha inválidos
+                response.Erros.Add("Email e/ou senha inválidos");
+                response.Sucesso = false;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                DataResponse<Funcionario> response = new DataResponse<Funcionario>();
+                response.Sucesso = false;
+                response.Erros.Add("Erro no banco de dados contate o administrador");
+                return response;
+            }
+            finally
+            {
+                connection.Dispose();
+            }
+
+        
 
         public async Task<UserDTO> GetUserByEmail(string email)
         {
