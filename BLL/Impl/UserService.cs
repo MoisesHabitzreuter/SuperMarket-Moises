@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Impl
 {
-    public class UserService : IUserService
+    public class UserService : IUserService, IService<UserDTO>
     {
         private readonly IUserRepository _userRepository;
         public UserService(IUserRepository userRepository)
@@ -22,10 +22,7 @@ namespace BLL.Impl
 
         public async Task<Response> Authenticate(string email, string passWord)
         {
-           await this._userRepository.Authenticate(email, passWord);
-            Response response = new Response();
-            response.Success = true;
-            return response;
+           return await this._userRepository.Authenticate(email, passWord);
         }
 
         public async Task<List<UserDTO>> GetUser()
@@ -70,6 +67,23 @@ namespace BLL.Impl
                     return response;
                 }
             }
+
+        public List<string> validate(UserDTO obj)
+        {
+            Response response = new Response();
+            List<string> errors = new List<string>();
+
+            if (string.IsNullOrWhiteSpace(obj.Name))
+            {
+                errors.Add("O nome deve ser informado");
+            }
+            else if (obj.Name.Length < 2 && obj.Name.Length > 45)
+            {
+                errors.Add("O nome deve conter entre 2 e 45 caracteres");
+
+            }
+            return errors;
         }
+    }
     }
 
