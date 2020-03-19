@@ -9,6 +9,6 @@ namespace BLL.Interfaces
     public interface IBrandService
     {
         Task<Response> Insert(BrandDTO brands);
-        Task<List<BrandDTO>> GetBrands();
+        Task<Response> GetBrands();
     }
 }

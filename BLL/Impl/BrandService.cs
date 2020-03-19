@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Impl
 {
-    public class BrandService : IBrandService
+    public class BrandService : IBrandService, IService<BrandDTO>
     {
         
         private readonly IBrandRepository _brandRepository;
@@ -23,24 +23,11 @@ namespace BLL.Impl
         public async Task<Response> Insert(BrandDTO brands)
         {
             Response response = new Response();
-
-            if (string.IsNullOrWhiteSpace(brands.Name))
-            {
-                response.Errors.Add("O nome da marca deve ser informado");
-            }
-            else if (brands.Name.Length < 2 && brands.Name.Length > 20)
-            {
-                response.Errors.Add("O nome da marca deve conter entre 2 e 20 caracteres =3");
-                response.Success = false;
-                return response;
-            }
-
             if (response.Errors.Count != 0)
             {
                 response.Success = false;
                 return response;
             }
-
             try
             {
                 await _brandRepository.Insert(brands);
@@ -59,6 +46,27 @@ namespace BLL.Impl
         public async Task<List<BrandDTO>> GetBrands()
         {
              return await _brandRepository.GetBrands();
+        }
+
+        Task<Response> IBrandService.GetBrands()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<string> validate(BrandDTO obj)
+        {
+            Response response = new Response();
+            List<string> errors = new List<string>();
+
+            if (string.IsNullOrWhiteSpace(obj.Name))
+            {
+                errors.Add("O nome da marca deve ser informado");
+            }
+            else if (obj.Name.Length < 2 && obj.Name.Length > 20)
+            {
+                errors.Add("O nome da marca deve conter entre 2 e 20 caracteres =3");
+            }
+            return errors;
         }
     }
 }
