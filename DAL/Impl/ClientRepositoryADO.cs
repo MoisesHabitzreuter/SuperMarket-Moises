@@ -127,8 +127,6 @@ namespace DAL.Impl
             command.Parameters.AddWithValue(@"RG", client.RG);
             command.Parameters.AddWithValue(@"PHONE", client.Phone);
             command.Parameters.AddWithValue(@"DATEBIRTH", client.DateBirth);
-            command.Parameters.AddWithValue(@"PASSWORD", Password.HashPassword(client.Password));
-            command.Parameters.AddWithValue(@"ID", client.ID);
 
             Response response = new Response();
             try
