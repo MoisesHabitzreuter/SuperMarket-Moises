@@ -22,10 +22,6 @@ namespace SuperMarketPresentationLayer.Controllers
         {
             return View();
         }
-        public IActionResult Insert()
-        {
-            return View();
-        }
         public IActionResult Buscarporcpf()
         {
             return View();
@@ -107,6 +103,10 @@ namespace SuperMarketPresentationLayer.Controllers
             ViewBag.Employees = employeeviewmodel;
             return View();
         }
+        public IActionResult Insert()
+        {
+            return View();
+        }
         [HttpPost]
         public async Task<IActionResult> Insert(EmployeeInsertViewModel viewModel)
         {
@@ -121,6 +121,32 @@ namespace SuperMarketPresentationLayer.Controllers
             try
             {
                 await _employeeService.Insert(dto);
+                return RedirectToAction("Index", "Client");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Erros = ex.Message;
+            }
+            return View();
+        }
+        public IActionResult Update()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Update(EmployeeUpdateViewModel viewModel)
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<EmployeeUpdateViewModel, EmployeeDTO>();
+            });
+            IMapper mapper = configuration.CreateMapper();
+            // new SERService().GetSERByID(4);
+            //Transforma o ClienteInsertViewModel em um ClienteDTO
+            EmployeeDTO dto = mapper.Map<EmployeeDTO>(viewModel);
+            try
+            {
+                await _employeeService.Update(dto);
                 return RedirectToAction("Index", "Client");
             }
             catch (Exception ex)
