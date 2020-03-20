@@ -2,6 +2,7 @@
 using DAL;
 using DAL.Interfaces;
 using DTO;
+using DTO.Responses;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,55 +12,79 @@ using System.Threading.Tasks;
 
 namespace BLL.Impl
 {
-    public class CategoryService : ICategoryService
+    public class CategoryService : ICategoryService, IService<CategoryDTO>
     {
         private ICategoryRepository _categoryRepository;
         public CategoryService(ICategoryRepository categoryrepository)
         {
             this._categoryRepository = categoryrepository;
         }
-        public async Task<List<CategoryDTO>> GetCategory()
+        public async Task<DataResponse<CategoryDTO>> GetCategory()
         {
-            return await _categoryRepository.GetCategories();
+            DataResponse<CategoryDTO> response = new DataResponse<CategoryDTO>();
+            if (response.HasErrors())
+            {
+                response.Success = false;
+                return response;
+            }
+            else
+            {
+                try
+                {
+                    await _categoryRepository.GetCategories();
+                    response.Success = true;
+                    return response;
+                }
+                catch (Exception ex)
+                {
+                    response.Errors.Add("Erro no banco contate o adm");
+                    response.Success = false;
+                    File.WriteAllText("Log.txt", ex.Message);
+                    return response;
+                }
+            }
         }
 
         public async Task<Response> Insert(CategoryDTO category)
         {
             Response response = new Response();
-
-            if (string.IsNullOrWhiteSpace(category.Name))
-            {
-                response.Errors.Add("O nome deve ser informado");
-            }
-            else if (category.Name.Length < 2 && category.Name.Length > 30)
-            {
-                response.Errors.Add("O nome da categoria deve conter entre 2 e 30 caracteres =3");
-                response.Success = false;
-                return response;
-            }
-
-            if (response.Errors.Count != 0)
+            if (response.HasErrors())
             {
                 response.Success = false;
                 return response;
             }
-
-            try
+            else
             {
-                await _categoryRepository.Insert(category);
-                response.Success = true;
-                return response;
+                try
+                {
+                    await _categoryRepository.Insert(category);
+                    response.Success = true;
+                    return response;
+                }
+                catch (Exception ex)
+                {
+                    response.Errors.Add("Erro no banco contate o adm");
+                    response.Success = false;
+                    File.WriteAllText("Log.txt", ex.Message);
+                    return response;
+                }
             }
-            catch (Exception ex)
+        }
+
+        public List<string> Validate(CategoryDTO obj)
+        {
+            Response response = new Response();
+            List<string> errors = new List<string>();
+
+            if (string.IsNullOrWhiteSpace(obj.Name))
             {
-                response.Errors.Add("Erro no banco contate o adm");
-                response.Success = false;
-                File.WriteAllText("Log.txt", ex.Message);
-                return response;
-
-
-
+                errors.Add("O nome da categoria deve ser informad");
             }
+            else if (obj.Name.Length < 2 && obj.Name.Length > 20)
+            {
+                errors.Add("O nome da marca deve conter entre 2 e 20 caracteres =3");
+            }
+            return errors;
         }
     }
 }

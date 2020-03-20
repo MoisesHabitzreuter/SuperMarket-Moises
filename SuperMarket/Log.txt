@@ -1,2 +1,1 @@
-Cannot insert the value NULL into column 'IsActive', table 'MarketWEB.dbo.BRANDS'; column does not allow nulls. INSERT fails.
-The statement has been terminated.
+An error occurred while updating the entries. See the inner exception for details.

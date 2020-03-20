@@ -6,6 +6,7 @@ using AutoMapper;
 using BLL.Impl;
 using BLL.Interfaces;
 using DTO;
+using DTO.Responses;
 using Microsoft.AspNetCore.Mvc;
 using SuperMarketPresentationLayer.Models;
 
@@ -21,20 +22,15 @@ namespace SuperMarketPresentationLayer.Controllers
 
         public async Task<IActionResult> Index()
         {
-            
-            List<CategoryDTO> categories = await this._categoryService.GetCategory();
-
+            DataResponse<CategoryDTO> response = new DataResponse<CategoryDTO>();
+            response = await _categoryService.GetCategory();
             var configuration = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<CategoryDTO, CategoryQueryViewModel>();
+                cfg.CreateMap<BrandDTO, BrandQueryViewModel>();
             });
             IMapper mapper = configuration.CreateMapper();
-            // new SERService().GetSERByID(4);
-            //Transforma o ClienteInsertViewModel em um ClienteDTO
-            List<CategoryQueryViewModel> categoriesViewModel =
-                mapper.Map<List<CategoryQueryViewModel>>(categories);
-            ViewBag.Categories = categoriesViewModel;
-            return View();
+            List<BrandQueryViewModel> dados = mapper.Map<List<BrandQueryViewModel>>(response.Data);
+            return View(dados);
         }
         public IActionResult Insert()
         {
@@ -51,8 +47,6 @@ namespace SuperMarketPresentationLayer.Controllers
             // new SERService().GetSERByID(4);
             //Transforma o ClienteInsertViewModel em um ClienteDTO
             CategoryDTO dto = mapper.Map<CategoryDTO>(viewModel);
-
-            
             try
             {
                 await this._categoryService.Insert(dto);

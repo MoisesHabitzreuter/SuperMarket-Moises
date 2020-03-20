@@ -22,5 +22,10 @@ namespace DTO
             this.Permissions = permissions;
             this.IsActive = isActive;
         }
+
+        public UserDTO()
+        {
+
+        }
     }
 }

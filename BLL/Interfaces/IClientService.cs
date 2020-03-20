@@ -1,4 +1,5 @@
 ﻿using DTO;
+using DTO.Responses;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +10,7 @@ namespace BLL.Interfaces
     public interface IClientService
     {
         Task<Response> Insert(ClientDTO client);
-        Task<List<ClientDTO>> GetClient(int page, int size);
-        Task<List<ClientDTO>> GetClient();
+        Task<Response> GetClient(int page, int size);
+        Task<DataResponse<ClientDTO>> GetClient();
     }
 }

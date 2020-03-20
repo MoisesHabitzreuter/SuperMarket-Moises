@@ -30,5 +30,9 @@ namespace DTO
             this.Function = function;
             this.IsActive = IsActive;
         }
+        public EmployeeDTO()
+        {
+
+        }
     }
 }

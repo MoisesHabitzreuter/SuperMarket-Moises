@@ -33,7 +33,7 @@ namespace SuperMarketPresentationLayer.Controllers
         {
             ViewBag.Brands = await _brandService.GetBrands();
             ViewBag.Provider = await _providerService.GetProvider();
-            ViewBag.Category = await this._categoryService.GetCategory();
+            ViewBag.Category = await _categoryService.GetCategory();
 
             return View();
         }

@@ -2,6 +2,7 @@
 using DAL;
 using DAL.Interfaces;
 using DTO;
+using DTO.Responses;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -23,14 +24,34 @@ namespace BLL.Impl
         public async Task<Response> Insert(BrandDTO brands)
         {
             Response response = new Response();
-            if (response.Errors.Count != 0)
+            if (response.HasErrors())
             {
                 response.Success = false;
                 return response;
             }
+            else
+            {
+                try
+                {
+                    await _brandRepository.Insert(brands);
+                    response.Success = true;
+                    return response;
+                }
+                catch (Exception ex)
+                {
+                    response.Errors.Add("Erro no banco contate o adm");
+                    response.Success = false;
+                    File.WriteAllText("Log.txt", ex.Message);
+                    return response;
+                }
+            }
+        }
+        public async Task<DataResponse<BrandDTO>> GetBrands()
+        {
+            DataResponse<BrandDTO> response = new DataResponse<BrandDTO>();
             try
             {
-                await _brandRepository.Insert(brands);
+                response.Data = await _brandRepository.GetBrands();
                 response.Success = true;
                 return response;
             }
@@ -43,17 +64,7 @@ namespace BLL.Impl
             }
         }
 
-        public async Task<List<BrandDTO>> GetBrands()
-        {
-             return await _brandRepository.GetBrands();
-        }
-
-        Task<Response> IBrandService.GetBrands()
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<string> validate(BrandDTO obj)
+        public List<string> Validate(BrandDTO obj)
         {
             Response response = new Response();
             List<string> errors = new List<string>();

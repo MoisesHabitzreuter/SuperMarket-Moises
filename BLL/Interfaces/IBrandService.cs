@@ -1,4 +1,5 @@
 ﻿using DTO;
+using DTO.Responses;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,6 +10,6 @@ namespace BLL.Interfaces
     public interface IBrandService
     {
         Task<Response> Insert(BrandDTO brands);
-        Task<Response> GetBrands();
+        Task<DataResponse<BrandDTO>> GetBrands();
     }
 }

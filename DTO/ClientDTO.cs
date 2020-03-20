@@ -28,5 +28,9 @@ namespace DTO
             this.DateBirth = dateBirth;
             this.IsActive = isActive;
         }
+        public ClientDTO()
+        {
+
+        }
     }
 }
