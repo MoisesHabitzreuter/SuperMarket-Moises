@@ -22,6 +22,27 @@ namespace SuperMarketPresentationLayer.Controllers
         {
             return View();
         }
+        public IActionResult Buscar()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Buscar(SaleQueryViewModel viewmodel)
+        {
+            List<SaleDTO> sales = await this._saleService.GetSales();
+
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<ProviderDTO, SaleQueryViewModel>();
+            });
+            IMapper mapper = configuration.CreateMapper();
+            // new SERService().GetSERByID(4);
+            //Transforma o ClienteInsertViewModel em um ClienteDTO
+            List<SaleQueryViewModel> salequeryviewmodel =
+                mapper.Map<List<SaleQueryViewModel>>(sales);
+            ViewBag.Sales = salequeryviewmodel;
+            return View();
+        }
         public IActionResult Insert()
         {
             return View();

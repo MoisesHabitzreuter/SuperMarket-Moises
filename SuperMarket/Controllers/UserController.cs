@@ -32,6 +32,48 @@ namespace SuperMarketPresentationLayer.Controllers
         {
             return View();
         }
+        public IActionResult Buscar()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Buscar(UserQueryViewModel viewmodel)
+        {
+            List<UserDTO> sales = await this._userService.GetUser();
+
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<ProviderDTO, UserQueryViewModel>();
+            });
+            IMapper mapper = configuration.CreateMapper();
+            // new SERService().GetSERByID(4);
+            //Transforma o ClienteInsertViewModel em um ClienteDTO
+            List<UserQueryViewModel> userqueryviewmodel =
+                mapper.Map<List<UserQueryViewModel>>(sales);
+            ViewBag.Users = userqueryviewmodel;
+            return View();
+        }
+        public IActionResult BuscarporEmail()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> BuscarporEmail(UserQueryViewModel viewmodel)
+        {
+            List<UserDTO> sales = await this._userService.GetUserByEmail();
+
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<ProviderDTO, UserQueryViewModel>();
+            });
+            IMapper mapper = configuration.CreateMapper();
+            // new SERService().GetSERByID(4);
+            //Transforma o ClienteInsertViewModel em um ClienteDTO
+            List<UserQueryViewModel> userqueryviewmodel =
+                mapper.Map<List<UserQueryViewModel>>(sales);
+            ViewBag.Users = userqueryviewmodel;
+            return View();
+        }
         public async Task<IActionResult> Login(string email, string passWord)
         {
 

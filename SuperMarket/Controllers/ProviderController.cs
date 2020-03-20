@@ -26,6 +26,69 @@ namespace SuperMarketPresentationLayer.Controllers
         {
             return View();
         }
+        public IActionResult Buscar()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Buscar(ProviderQueryViewModel viewmodel)
+        {
+            List<ProviderDTO> providers = await this._providerService.GetProvider();
+
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<ProviderDTO, ProviderQueryViewModel>();
+            });
+            IMapper mapper = configuration.CreateMapper();
+            // new SERService().GetSERByID(4);
+            //Transforma o ClienteInsertViewModel em um ClienteDTO
+            List<ProviderQueryViewModel> providerviewmodel =
+                mapper.Map<List<ProviderQueryViewModel>>(providers);
+            ViewBag.Providers = providerviewmodel;
+            return View();
+        }
+        public IActionResult BuscarporCNPJ()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> BuscarporCNPJ(ProviderQueryViewModel viewmodel)
+        {
+            List<ProviderDTO> providers = await this._providerService.GetProviderbyCNPJ();
+
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<ProviderDTO, ProviderQueryViewModel>();
+            });
+            IMapper mapper = configuration.CreateMapper();
+            // new SERService().GetSERByID(4);
+            //Transforma o ClienteInsertViewModel em um ClienteDTO
+            List<ProviderQueryViewModel> providerviewmodel =
+                mapper.Map<List<ProviderQueryViewModel>>(providers);
+            ViewBag.Providers = providerviewmodel;
+            return View();
+        }
+        public IActionResult BuscarporEmail()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> BuscarporEmail(ProviderQueryViewModel viewmodel)
+        {
+            List<ProviderDTO> providers = await this._providerService.GetProviderbyEmail();
+
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<ProviderDTO, ProviderQueryViewModel>();
+            });
+            IMapper mapper = configuration.CreateMapper();
+            // new SERService().GetSERByID(4);
+            //Transforma o ClienteInsertViewModel em um ClienteDTO
+            List<ProviderQueryViewModel> providerviewmodel =
+                mapper.Map<List<ProviderQueryViewModel>>(providers);
+            ViewBag.Providers = providerviewmodel;
+            return View();
+        }
         [HttpPost]
         public async Task<IActionResult> Insert(ProviderInsertViewModel viewmodel)
         {
