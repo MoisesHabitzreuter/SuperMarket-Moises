@@ -4,8 +4,8 @@ using System.Text;
 
 namespace DTO.Responses
 {
-    public class DataResponse<T> : Response
+    public class DataResponse : Response
     {
-        public List<T> Data { get; set; }
+        public object Data { get; set; }
     }
 }

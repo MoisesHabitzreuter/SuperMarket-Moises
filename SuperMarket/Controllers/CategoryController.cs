@@ -22,7 +22,7 @@ namespace SuperMarketPresentationLayer.Controllers
 
         public async Task<IActionResult> Index()
         {
-            DataResponse<CategoryDTO> response = new DataResponse<CategoryDTO>();
+            DataResponse response = new DataResponse();
             response = await _categoryService.GetCategory();
             var configuration = new MapperConfiguration(cfg =>
             {

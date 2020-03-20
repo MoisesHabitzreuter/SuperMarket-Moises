@@ -22,7 +22,7 @@ namespace SuperMarketPresentationLayer.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            DataResponse<ClientDTO> response = await _clientService.GetClient();
+            DataResponse response = await _clientService.GetClient();
 
             var configuration = new MapperConfiguration(cfg =>
             {
@@ -32,7 +32,7 @@ namespace SuperMarketPresentationLayer.Controllers
             // new SERService().GetSERByID(4);
             //Transforma o ClienteInsertViewModel em um ClienteDTO
             List<ClientQueryViewModel> clientQueryViews =
-                mapper.Map<List<ClientQueryViewModel>>(response);
+                mapper.Map<List<ClientQueryViewModel>>(response.Data);
             ViewBag.Clients = clientQueryViews;
             return View();
         }
@@ -41,9 +41,10 @@ namespace SuperMarketPresentationLayer.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> BuscarporCpf(ClientQueryViewModel viewmodel)
+        public async Task<IActionResult> BuscarporCpf(string cpf)
         {
-            List<ClientDTO> clientes = await this._clientService.GetClientByCPF();
+            DataResponse response = new DataResponse();
+            response = await this._clientService.GetClientByCPF(cpf);
 
             var configuration = new MapperConfiguration(cfg =>
             {
@@ -53,7 +54,7 @@ namespace SuperMarketPresentationLayer.Controllers
             // new SERService().GetSERByID(4);
             //Transforma o ClienteInsertViewModel em um ClienteDTO
             List<ClientQueryViewModel> categoriasViewModel =
-                mapper.Map<List<ClientQueryViewModel>>(clientes);
+                mapper.Map<List<ClientQueryViewModel>>(response.Data);
             ViewBag.Clients = categoriasViewModel;
             return View();
         }

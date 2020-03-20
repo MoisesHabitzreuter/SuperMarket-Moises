@@ -19,36 +19,29 @@ namespace BLL.Impl
         {
             this._categoryRepository = categoryrepository;
         }
-        public async Task<DataResponse<CategoryDTO>> GetCategory()
+        public async Task<DataResponse> GetCategory()
         {
-            DataResponse<CategoryDTO> response = new DataResponse<CategoryDTO>();
-            if (response.HasErrors())
+            DataResponse response = new DataResponse();
+            try
             {
-                response.Success = false;
+                response.Data = await _categoryRepository.GetCategories();
+                response.Success = true;
                 return response;
             }
-            else
+            catch (Exception ex)
             {
-                try
-                {
-                    await _categoryRepository.GetCategories();
-                    response.Success = true;
-                    return response;
-                }
-                catch (Exception ex)
-                {
-                    response.Errors.Add("Erro no banco contate o adm");
-                    response.Success = false;
-                    File.WriteAllText("Log.txt", ex.Message);
-                    return response;
-                }
+                response.Errors.Add("Erro no banco contate o adm");
+                response.Success = false;
+                File.WriteAllText("Log.txt", ex.Message);
+                return response;
             }
         }
 
         public async Task<Response> Insert(CategoryDTO category)
         {
             Response response = new Response();
-            if (response.HasErrors())
+            response.Errors = Validate(category);
+            if (response.Errors.Count != 0)
             {
                 response.Success = false;
                 return response;

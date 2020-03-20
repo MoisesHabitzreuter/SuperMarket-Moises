@@ -25,7 +25,7 @@ namespace DAL.Impl
         {
             return await _context.Clients.Skip((page - 1) * size).Take(size).ToListAsync();
         }
-        public async Task<List<ClientDTO>> GetClients()
+        public async Task<List<ClientDTO>> GetClientsByCPF()
         {
             return await _context.Clients.ToListAsync();
         }

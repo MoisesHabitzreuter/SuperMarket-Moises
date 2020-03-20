@@ -18,7 +18,7 @@ namespace DAL.Impl
         {
             this._options = options;
         }
-        public async Task<List<ClientDTO>> GetClients()
+        public async Task<List<ClientDTO>> GetClientsByCPF()
         {
             SqlConnection connection = new SqlConnection();
             connection.ConnectionString = _options.ConnectionString;

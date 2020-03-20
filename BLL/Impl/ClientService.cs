@@ -71,35 +71,45 @@ namespace BLL.Impl
             return errors;
         }
 
-        public async Task<DataResponse<ClientDTO>> GetClient()
+        public async Task<DataResponse> GetClient()
         {
-            DataResponse<ClientDTO> response = new DataResponse<ClientDTO>();
-            if (response.HasErrors())
+            DataResponse response = new DataResponse();
+            try
             {
-                response.Success = false;
+                response.Data = await _clientRepository.GetClientsByCPF();
+                response.Success = true;
                 return response;
             }
-            else
+            catch (Exception ex)
             {
-                try
-                {
-                    await _clientRepository.GetClients();
-                    response.Success = true;
-                    return response;
-                }
-                catch (Exception ex)
-                {
-                    response.Errors.Add("Erro no banco contate o adm");
-                    response.Success = false;
-                    File.WriteAllText("Log.txt", ex.Message);
-                    return response;
-                }
+                response.Errors.Add("Erro no banco contate o adm");
+                response.Success = false;
+                File.WriteAllText("Log.txt", ex.Message);
+                return response;
             }
         }
 
         public Task<Response> GetClient(int page, int size)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<DataResponse> GetClientByCPF(string cpf)
+        {
+            DataResponse response = new DataResponse();
+            try
+            {
+                response.Success = true;
+                response.Data = await _clientRepository.GetClientsByCPF(cpf);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Errors.Add("Erro no banco contate o adm");
+                response.Success = false;
+                File.WriteAllText("Log.txt", ex.Message);
+                return response;
+            }
         }
     }
 }

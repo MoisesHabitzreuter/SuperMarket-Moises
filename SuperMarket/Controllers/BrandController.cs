@@ -37,7 +37,7 @@ namespace SuperMarketPresentationLayer.Controllers
 
             try
             {
-                await _brandService.GetBrands(dto);
+                await _brandService.GetBrands();
                 return RedirectToAction("Index", "Category");
             }
             catch (Exception ex)
@@ -79,7 +79,7 @@ namespace SuperMarketPresentationLayer.Controllers
         }
         public async Task<IActionResult> Get()
         {
-            DataResponse<BrandDTO> response = new DataResponse<BrandDTO>();
+            DataResponse response = new DataResponse();
             response = await _brandService.GetBrands();
             var configuration = new MapperConfiguration(cfg =>
             {
