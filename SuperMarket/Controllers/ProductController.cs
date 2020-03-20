@@ -29,6 +29,7 @@ namespace SuperMarketPresentationLayer.Controllers
         {
             return View();
         }
+
         public async Task<IActionResult> Insert()
         {
             ViewBag.Brands = await _brandService.GetBrands();

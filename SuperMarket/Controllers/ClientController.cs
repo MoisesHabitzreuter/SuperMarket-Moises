@@ -36,6 +36,27 @@ namespace SuperMarketPresentationLayer.Controllers
             ViewBag.Clients = clientQueryViews;
             return View();
         }
+        public IActionResult BuscarporCpf()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> BuscarporCpf(ClientQueryViewModel viewmodel)
+        {
+            List<ClientDTO> clientes = await this._clientService.GetClientByCPF();
+
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<ClientDTO, ClientQueryViewModel>();
+            });
+            IMapper mapper = configuration.CreateMapper();
+            // new SERService().GetSERByID(4);
+            //Transforma o ClienteInsertViewModel em um ClienteDTO
+            List<ClientQueryViewModel> categoriasViewModel =
+                mapper.Map<List<ClientQueryViewModel>>(clientes);
+            ViewBag.Clients = categoriasViewModel;
+            return View();
+        }
         public IActionResult Insert()
         {
             return View();
