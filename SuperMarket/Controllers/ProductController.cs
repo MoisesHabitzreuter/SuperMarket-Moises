@@ -37,7 +37,7 @@ namespace SuperMarketPresentationLayer.Controllers
         [HttpPost]
         public async Task<IActionResult> Buscar(ProductQueryViewModel viewmodel)
         {
-            List<ProductDTO> products = await this._productService.GetProduct();
+            DataResponse<List<ProductDTO>> response = await this._productService.GetProduct();
 
             var configuration = new MapperConfiguration(cfg =>
             {
@@ -47,7 +47,7 @@ namespace SuperMarketPresentationLayer.Controllers
             // new SERService().GetSERByID(4);
             //Transforma o ClienteInsertViewModel em um ClienteDTO
             List<ProductQueryViewModel> productviewmodel =
-                mapper.Map<List<ProductQueryViewModel>>(products);
+                mapper.Map<List<ProductQueryViewModel>>(response.Data);
             ViewBag.Products = productviewmodel;
             return View();
         }
@@ -58,9 +58,9 @@ namespace SuperMarketPresentationLayer.Controllers
         [HttpPost]
         public async Task<IActionResult> Buscarpormarca(ProductQueryViewModel viewmodel)
         {
-            DataResponse<ProductDTO> response = new DataResponse<ProductDTO>();
-            response.Data = await this._productService.GetProductbyBrand();
-
+            //todo:Verificar este método
+            DataResponse<ProductDTO> response = await this._productService.GetProductbyBrand();
+            //todo: kkkkkk html
             var configuration = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<ProductDTO, ProductQueryViewModel>();
@@ -80,7 +80,7 @@ namespace SuperMarketPresentationLayer.Controllers
         [HttpPost]
         public async Task<IActionResult> Buscarporcategoria(ProductQueryViewModel viewmodel)
         {
-            List<ProductDTO> products = await this._productService.GetProductbyCategory();
+            DataResponse<List<ProductDTO>> response = await this._productService.GetProductsByCategory(viewmodel.Category);
 
             var configuration = new MapperConfiguration(cfg =>
             {
@@ -90,7 +90,7 @@ namespace SuperMarketPresentationLayer.Controllers
             // new SERService().GetSERByID(4);
             //Transforma o ClienteInsertViewModel em um ClienteDTO
             List<ProductQueryViewModel> productviewmodel =
-                mapper.Map<List<ProductQueryViewModel>>(products);
+                mapper.Map<List<ProductQueryViewModel>>(response.Data);
             ViewBag.Products = productviewmodel;
             return View();
         }

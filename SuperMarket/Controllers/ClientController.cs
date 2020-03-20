@@ -22,7 +22,7 @@ namespace SuperMarketPresentationLayer.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            DataResponse response = await _clientService.GetClient();
+            DataResponse<List<ClientDTO>> response = await _clientService.GetClient();
 
             var configuration = new MapperConfiguration(cfg =>
             {
@@ -43,8 +43,7 @@ namespace SuperMarketPresentationLayer.Controllers
         [HttpPost]
         public async Task<IActionResult> BuscarporCpf(string cpf)
         {
-            DataResponse response = new DataResponse();
-            response = await this._clientService.GetClientByCPF(cpf);
+            DataResponse<ClientDTO> response = await this._clientService.GetClientByCPF(cpf);
 
             var configuration = new MapperConfiguration(cfg =>
             {

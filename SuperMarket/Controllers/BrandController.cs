@@ -79,8 +79,7 @@ namespace SuperMarketPresentationLayer.Controllers
         }
         public async Task<IActionResult> Get()
         {
-            DataResponse<BrandDTO> response = new DataResponse<BrandDTO>();
-            response.Data = await _brandService.GetBrands();
+            DataResponse<List<BrandDTO>> response = await _brandService.GetBrands();
             var configuration = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<BrandDTO, BrandQueryViewModel>();

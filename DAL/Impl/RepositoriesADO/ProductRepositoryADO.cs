@@ -57,8 +57,46 @@ namespace DAL.Impl
             SqlConnection connection = new SqlConnection();
             connection.ConnectionString = _options.ConnectionString;
             SqlCommand command = new SqlCommand();
-            command.CommandText = "SELECT * FROM PRODUCTS WHERE BRANDID LIKE @BRANDID";
+            command.CommandText = "SELECT * FROM PRODUCTS WHERE BRANDID = @BRANDID";
             command.Connection = connection;
+            command.Parameters.AddWithValue("@BRANDID", brand);
+
+            try
+            {
+                await connection.OpenAsync();
+                SqlDataReader reader = command.ExecuteReader();
+                List<ProductDTO> products = new List<ProductDTO>();
+                while (reader.Read())
+                {
+                    ProductDTO product = new ProductDTO(Convert.ToInt32(reader["ID"]),
+                                       (string)reader["DESCRIPTION"],
+                                       (int)reader["BRANDID"],
+                                       (int)reader["PROVIDERID"],
+                                       (double)reader["PRICE"],
+                                       (bool)reader["ISACTIVE"]);
+                    products.Add(product);
+                }
+                return products;
+            }
+            catch (Exception ex)
+            {
+                File.WriteAllText("log.txt", ex.Message);
+                return null;
+            }
+            finally
+            {
+                await connection.DisposeAsync();
+            }
+        }
+
+        public async Task<List<ProductDTO>> GetProductsByCategory(int category)
+        {
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString = _options.ConnectionString;
+            SqlCommand command = new SqlCommand();
+            command.CommandText = "SELECT * FROM PRODUCTS WHERE CATEGORY = @CATEGORY";
+            command.Connection = connection;
+            command.Parameters.AddWithValue("@CATEGORY", category);
 
             try
             {
@@ -93,9 +131,9 @@ namespace DAL.Impl
             SqlConnection connection = new SqlConnection();
             connection.ConnectionString = _options.ConnectionString;
             SqlCommand command = new SqlCommand();
-            command.CommandText = "SELECT * FROM PRODUCTS WHERE PRICE LIKE @PRICE";
+            command.CommandText = "SELECT * FROM PRODUCTS WHERE PRICE <= @PRICE";
             command.Connection = connection;
-
+            command.Parameters.AddWithValue("@PRICE", price);
             try
             {
                 await connection.OpenAsync();

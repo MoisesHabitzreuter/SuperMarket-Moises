@@ -1,4 +1,5 @@
 ﻿using DTO;
+using DTO.Responses;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,6 +10,7 @@ namespace BLL.Interfaces
     public interface IProductService
     {
         Task<Response> Insert(ProductDTO product);
-        Task<List<ProductDTO>> GetProduct();
+        Task<DataResponse<List<ProductDTO>>> GetProduct();
+        Task<DataResponse<List<ProductDTO>>> GetProductsByCategory(int category);
     }
 }

@@ -2,6 +2,7 @@
 using DAL;
 using DAL.Interfaces;
 using DTO;
+using DTO.Responses;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,9 +22,21 @@ namespace BLL.Impl
             this._productRepository = productRepository;
         }
 
-        public async Task<List<ProductDTO>> GetProduct()
+        public async Task<DataResponse<List<ProductDTO>>> GetProductsByCategory(int category)
         {
-            return await _productRepository.GetProducts();
+            DataResponse<List<ProductDTO>> response = new DataResponse<List<ProductDTO>>();
+            try
+            {
+                response.Success = true;
+                response.Data = await _productRepository.GetProductsByCategory(category);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                File.WriteAllText("Log.txt", ex.Message);
+                return response;
+            }
         }
 
         public async Task<Response> Insert(ProductDTO product)
@@ -63,9 +76,23 @@ namespace BLL.Impl
                     return response;
                 }
             }
-        }
-        
 
-        
+        public async Task<DataResponse<List<ProductDTO>>> GetProduct()
+        {
+            DataResponse<List<ProductDTO>> response = new DataResponse<List<ProductDTO>>();
+            try
+            {
+                response.Success = true;
+                response.Data = await _productRepository.GetProducts();
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                await File.AppendAllTextAsync("Log.txt", ex.Message);
+                return response;
+            }
+        }
     }
+}
 

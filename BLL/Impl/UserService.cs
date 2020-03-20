@@ -48,10 +48,11 @@ namespace BLL.Impl
                 response.Data = await _userRepository.GetUserByEmail(email);
                 return response;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                response.Success = false;
+                await File.AppendAllTextAsync("Log.txt", ex.Message);
+                return response;
             }
         }
 
@@ -99,10 +100,21 @@ namespace BLL.Impl
             return errors;
         }
 
-        Task<DataResponse<UserDTO>> IUserService.GetUser()
+        public async Task<DataResponse<List<UserDTO>>> GetUser()
         {
-            throw new NotImplementedException();
+            DataResponse<List<UserDTO>> response = new DataResponse<List<UserDTO>>();
+            try
+            {
+                response.Success = true;
+                response.Data = await _userRepository.GetUsers();
+                return response;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
-    }
+}
 

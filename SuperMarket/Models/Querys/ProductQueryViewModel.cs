@@ -16,7 +16,7 @@ namespace SuperMarketPresentationLayer.Models
         [Required(ErrorMessage = "O Fornecedor do Produto deve ser informada")]
         public string Provider { get; set; }
         [Required(ErrorMessage = "A categoria do Produto deve ser informada")]
-        public string Category { get; set; }
+        public int Category { get; set; }
         [Required(ErrorMessage = "O Preço do Produto deve ser informada")]
         [Range(1, 5000, ErrorMessage = "O preço do produto está incorreto")]
         public double Price { get; set; }

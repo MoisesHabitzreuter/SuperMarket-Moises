@@ -40,11 +40,11 @@ namespace SuperMarketPresentationLayer.Controllers
         [HttpPost]
         public async Task<IActionResult> Buscar(UserQueryViewModel viewmodel)
         {
-            List<UserDTO> sales = await this._userService.GetUser();
+            DataResponse<List<UserDTO>> sales = await this._userService.GetUser();
 
             var configuration = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<ProviderDTO, UserQueryViewModel>();
+                cfg.CreateMap<UserDTO, UserQueryViewModel>();
             });
             IMapper mapper = configuration.CreateMapper();
             // new SERService().GetSERByID(4);
@@ -61,8 +61,7 @@ namespace SuperMarketPresentationLayer.Controllers
         [HttpPost]
         public async Task<IActionResult> BuscarporEmail(UserQueryViewModel viewmodel)
         {
-            DataResponse<UserDTO> response = new DataResponse<UserDTO>();
-            response.Data = await _userService.GetUserByEmail();
+            DataResponse<UserDTO> response = await _userService.GetUserByEmail(viewmodel.Email);
 
             var configuration = new MapperConfiguration(cfg =>
             {

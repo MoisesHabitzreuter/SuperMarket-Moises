@@ -29,8 +29,7 @@ namespace SuperMarketPresentationLayer.Controllers
         }
         public async Task<IActionResult> Buscarporcpf(string cpf)
         {
-            DataResponse response = new DataResponse();
-            response = await _employeeService.GetEmployeeByCPF(cpf);
+            DataResponse<EmployeeDTO> response = await _employeeService.GetEmployeeByCPF(cpf);
 
             var configuration = new MapperConfiguration(cfg =>
             {
@@ -54,8 +53,7 @@ namespace SuperMarketPresentationLayer.Controllers
         }
         public async Task<IActionResult> Buscarporemail(string email)
         {
-            DataResponse response = new DataResponse();
-            response = await this._employeeService.GetEmployeeByEmail(email);
+            DataResponse<EmployeeDTO> response = await this._employeeService.GetEmployeeByEmail(email);
 
             var configuration = new MapperConfiguration(cfg =>
             {
@@ -76,7 +74,7 @@ namespace SuperMarketPresentationLayer.Controllers
         [HttpPost]
         public async Task<IActionResult> Buscar(EmployeeQueryViewModel viewmodel)
         {
-            List<EmployeeDTO> employees = await this._employeeService.GetEmployee();
+            DataResponse<List<EmployeeDTO>> employees = await this._employeeService.GetEmployee();
 
             var configuration = new MapperConfiguration(cfg =>
             {

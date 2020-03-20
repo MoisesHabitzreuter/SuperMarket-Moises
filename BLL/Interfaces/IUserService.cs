@@ -10,7 +10,7 @@ namespace BLL.Interfaces
     public interface IUserService
     {
         Task<Response> Insert(UserDTO user);
-        Task<DataResponse<UserDTO>> GetUser();
+        Task<DataResponse<List<UserDTO>>> GetUser();
         Task<Response> Authenticate(string email, string passWord);
         Task<DataResponse<UserDTO>> GetUserByEmail(string email);
     }

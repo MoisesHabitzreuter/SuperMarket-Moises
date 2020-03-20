@@ -26,6 +26,11 @@ namespace DAL.Impl
             return await _context.Products.Where(c => c.BrandID == brand.ID).ToListAsync();
         }
 
+        public async Task<List<ProductDTO>> GetProductsByCategory(int category)
+        {
+            return await _context.Products.Where(c => c.ProductCategory.Any(c => c.CategoryID == category)).ToListAsync();
+        }
+
         public async Task<List<ProductDTO>> GetProductsByPrice(double price)
         {
             return await _context.Products.Where(c => c.Price < price).ToListAsync();

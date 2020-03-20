@@ -34,7 +34,7 @@ namespace SuperMarketPresentationLayer.Controllers
         [HttpPost]
         public async Task<IActionResult> Buscar(ProviderQueryViewModel viewmodel)
         {
-            List<ProviderDTO> providers = await this._providerService.GetProvider();
+            DataResponse<List<ProviderDTO>> response = await this._providerService.GetProvider();
 
             var configuration = new MapperConfiguration(cfg =>
             {
@@ -44,7 +44,7 @@ namespace SuperMarketPresentationLayer.Controllers
             // new SERService().GetSERByID(4);
             //Transforma o ClienteInsertViewModel em um ClienteDTO
             List<ProviderQueryViewModel> providerviewmodel =
-                mapper.Map<List<ProviderQueryViewModel>>(providers);
+                mapper.Map<List<ProviderQueryViewModel>>(response.Data);
             ViewBag.Providers = providerviewmodel;
             return View();
         }
@@ -55,8 +55,7 @@ namespace SuperMarketPresentationLayer.Controllers
         [HttpPost]
         public async Task<IActionResult> BuscarporCNPJ(ProviderQueryViewModel viewmodel)
         {
-            DataResponse<ProviderDTO> response = new DataResponse<ProviderDTO>();
-            response.Data = await this._providerService.GetProviderbyCNPJ();
+            DataResponse<ProviderDTO> response = await _providerService.GetProviderbyCNPJ(viewmodel.CNPJ);
 
             var configuration = new MapperConfiguration(cfg =>
             {
@@ -77,9 +76,7 @@ namespace SuperMarketPresentationLayer.Controllers
         [HttpPost]
         public async Task<IActionResult> BuscarporEmail(ProviderQueryViewModel viewmodel)
         {
-            DataResponse<ProviderDTO> response = new DataResponse<ProviderDTO>();
-            response.Data = await this._providerService.GetProviderbyEmail();
-
+            DataResponse<ProviderDTO> response = await _providerService.GetProviderbyEmail(viewmodel.Email);
             var configuration = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<ProviderDTO, ProviderQueryViewModel>();
