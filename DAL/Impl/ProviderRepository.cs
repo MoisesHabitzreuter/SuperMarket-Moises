@@ -26,7 +26,7 @@ namespace DAL.Impl
             return await this._context.Providers.FirstOrDefaultAsync(c => c.Email == email);
         }
 
-        public async Task<List<ProviderDTO>> GetProviders()
+        public async Task<List<ProviderDTO>> GetProviderByCNPJ()
         {
             return await this._context.Providers.ToListAsync();
         }
@@ -40,6 +40,11 @@ namespace DAL.Impl
         {
             _context.Providers.Update(provider);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<ProviderDTO>> GetProviders()
+        {
+            return await _context.Providers.ToListAsync();
         }
     }
 }

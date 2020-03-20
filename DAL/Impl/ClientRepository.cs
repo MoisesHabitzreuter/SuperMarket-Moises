@@ -25,10 +25,6 @@ namespace DAL.Impl
         {
             return await _context.Clients.Skip((page - 1) * size).Take(size).ToListAsync();
         }
-        public async Task<List<ClientDTO>> GetClientsByCPF()
-        {
-            return await _context.Clients.ToListAsync();
-        }
 
         public async Task Update(ClientDTO client)
         {
@@ -36,9 +32,14 @@ namespace DAL.Impl
             await _context.SaveChangesAsync();
         }
 
+        public async Task<List<ClientDTO>> GetClients()
+        {
+            return await _context.Clients.ToListAsync();
+        }
+
         public async Task<ClientDTO> GetClientsByCPF(string cpf)
         {
-             return await _context.Clients.FirstOrDefaultAsync(c => c.CPF == cpf);
+            return await _context.Clients.FirstOrDefaultAsync(c => c.CPF == cpf);
         }
     }
 }

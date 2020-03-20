@@ -10,9 +10,9 @@ namespace BLL.Interfaces
     public interface IEmployeeService
     {
         Task<Response> Insert(EmployeeDTO employee);
-        Task<List<EmployeeDTO>> GetEmployee();
-        Task<DataResponse> GetEmployeeByCPF(string cpf);
-        Task<DataResponse> GetEmployeeByEmail(string email);
+        Task<DataResponse<List<EmployeeDTO>>> GetEmployee();
+        Task<DataResponse<EmployeeDTO>> GetEmployeeByCPF(string cpf);
+        Task<DataResponse<EmployeeDTO>> GetEmployeeByEmail(string email);
         Task<Response> Update(EmployeeDTO dto);
     }
 }

@@ -22,14 +22,26 @@ namespace BLL.Impl
             this._employeeRepository = employeeRepository;
         }
 
-        public async Task<List<EmployeeDTO>> GetEmployee()
+        public async Task<DataResponse<List<EmployeeDTO>>> GetEmployee()
         {
-            return await _employeeRepository.GetEmployees();
+            DataResponse<List<EmployeeDTO>> response = new DataResponse<List<EmployeeDTO>>();
+            try
+            {
+                response.Success = true;
+                response.Data = await _employeeRepository.GetEmployees();
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                File.WriteAllText("Log.txt", ex.Message);
+                return response;
+            }
         }
 
-        public async Task<DataResponse> GetEmployeeByCPF(string cpf)
+        public async Task<DataResponse<EmployeeDTO>> GetEmployeeByCPF(string cpf)
         {
-            DataResponse response = new DataResponse();
+            DataResponse<EmployeeDTO> response = new DataResponse<EmployeeDTO>();
             try
             {
                 response.Success = true;
@@ -44,9 +56,9 @@ namespace BLL.Impl
             }
         }
 
-        public async Task<DataResponse> GetEmployeeByEmail(string email)
+        public async Task<DataResponse<EmployeeDTO>> GetEmployeeByEmail(string email)
         {
-            DataResponse response = new DataResponse();
+            DataResponse<EmployeeDTO> response = new DataResponse<EmployeeDTO>();
             try
             {
                 response.Success = true;

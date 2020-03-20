@@ -6,6 +6,7 @@ using AutoMapper;
 using BLL.Impl;
 using BLL.Interfaces;
 using DTO;
+using DTO.Responses;
 using Microsoft.AspNetCore.Mvc;
 using SuperMarketPresentationLayer.Models;
 
@@ -57,7 +58,8 @@ namespace SuperMarketPresentationLayer.Controllers
         [HttpPost]
         public async Task<IActionResult> Buscarpormarca(ProductQueryViewModel viewmodel)
         {
-            List<ProductDTO> products = await this._productService.GetProductbyBrand();
+            DataResponse<ProductDTO> response = new DataResponse<ProductDTO>();
+            response.Data = await this._productService.GetProductbyBrand();
 
             var configuration = new MapperConfiguration(cfg =>
             {
@@ -67,7 +69,7 @@ namespace SuperMarketPresentationLayer.Controllers
             // new SERService().GetSERByID(4);
             //Transforma o ClienteInsertViewModel em um ClienteDTO
             List<ProductQueryViewModel> productviewmodel =
-                mapper.Map<List<ProductQueryViewModel>>(products);
+                mapper.Map<List<ProductQueryViewModel>>(response.Data);
             ViewBag.Products = productviewmodel;
             return View();
         }

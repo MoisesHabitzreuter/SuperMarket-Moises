@@ -91,7 +91,7 @@ namespace DAL.Impl
             }
         }
 
-        public async Task<List<ProviderDTO>> GetProviders()
+        public async Task<List<ProviderDTO>> GetProviderByCNPJ()
         {
             SqlConnection connection = new SqlConnection();
             connection.ConnectionString = _options.ConnectionString;
@@ -165,7 +165,7 @@ namespace DAL.Impl
             command.Parameters.AddWithValue(@"PHONE", provider.Phone);
 
 
-        Response response = new Response();
+            Response response = new Response();
             try
             {
                 await connection.OpenAsync();
@@ -181,6 +181,40 @@ namespace DAL.Impl
                 await connection.CloseAsync();
             }
         }
-    }
-    }
 
+        public async Task<List<ProviderDTO>> GetProviders()
+        {
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString = _options.ConnectionString;
+            SqlCommand command = new SqlCommand();
+            command.CommandText = "SELECT * FROM PROVIDERS";
+            command.Connection = connection;
+            List<ProviderDTO> providers = new List<ProviderDTO>();
+            try
+            {
+                await connection.OpenAsync();
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    ProviderDTO provider = new ProviderDTO(Convert.ToInt32(reader["ID"]),
+                                       (string)reader["NAMEFANTASY"],
+                                       (string)reader["EMAIL"],
+                                       (string)reader["CNPJ"],
+                                       (string)reader["PHONE"],
+                                       (bool)reader["ISACTIVE"]);
+                    providers.Add(provider);
+                }
+                return providers;
+            }
+            catch(Exception ex)
+            {
+                File.WriteAllText("log.txt", ex.Message);
+                return null;
+            }
+            finally
+            {
+                await connection.DisposeAsync();
+            }
+        }
+    }
+}

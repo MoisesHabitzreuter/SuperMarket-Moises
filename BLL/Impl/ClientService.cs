@@ -71,12 +71,12 @@ namespace BLL.Impl
             return errors;
         }
 
-        public async Task<DataResponse> GetClient()
+        public async Task<DataResponse<List<ClientDTO>>> GetClient()
         {
-            DataResponse response = new DataResponse();
+            DataResponse<List<ClientDTO>> response = new DataResponse<List<ClientDTO>>();
             try
             {
-                response.Data = await _clientRepository.GetClientsByCPF();
+                response.Data = await _clientRepository.GetClients();
                 response.Success = true;
                 return response;
             }
@@ -94,9 +94,9 @@ namespace BLL.Impl
             throw new NotImplementedException();
         }
 
-        public async Task<DataResponse> GetClientByCPF(string cpf)
+        public async Task<DataResponse<ClientDTO>> GetClientByCPF(string cpf)
         {
-            DataResponse response = new DataResponse();
+            DataResponse<ClientDTO> response = new DataResponse<ClientDTO>();
             try
             {
                 response.Success = true;

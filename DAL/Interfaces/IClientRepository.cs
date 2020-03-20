@@ -10,8 +10,8 @@ namespace DAL.Interfaces
     {
         public Task Insert(ClientDTO client);
         public Task<List<ClientDTO>> GetClientsPage(int page, int size);
-        public Task<List<ClientDTO>> GetClientsByCPF();
         public Task<ClientDTO> GetClientsByCPF(string cpf);
+        public Task<List<ClientDTO>> GetClients();
         public Task Update(ClientDTO client);
     }
 }

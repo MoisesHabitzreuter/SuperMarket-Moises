@@ -1,4 +1,5 @@
 ﻿using DTO;
+using DTO.Responses;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,8 +10,8 @@ namespace BLL.Interfaces
     public interface IUserService
     {
         Task<Response> Insert(UserDTO user);
-        Task<List<UserDTO>> GetUser();
+        Task<DataResponse<UserDTO>> GetUser();
         Task<Response> Authenticate(string email, string passWord);
-
+        Task<DataResponse<UserDTO>> GetUserByEmail(string email);
     }
 }

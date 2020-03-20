@@ -6,6 +6,7 @@ using AutoMapper;
 using BLL.Impl;
 using BLL.Interfaces;
 using DTO;
+using DTO.Responses;
 using Microsoft.AspNetCore.Mvc;
 using SuperMarketPresentationLayer.Models;
 
@@ -54,7 +55,8 @@ namespace SuperMarketPresentationLayer.Controllers
         [HttpPost]
         public async Task<IActionResult> BuscarporCNPJ(ProviderQueryViewModel viewmodel)
         {
-            List<ProviderDTO> providers = await this._providerService.GetProviderbyCNPJ();
+            DataResponse<ProviderDTO> response = new DataResponse<ProviderDTO>();
+            response.Data = await this._providerService.GetProviderbyCNPJ();
 
             var configuration = new MapperConfiguration(cfg =>
             {
@@ -64,7 +66,7 @@ namespace SuperMarketPresentationLayer.Controllers
             // new SERService().GetSERByID(4);
             //Transforma o ClienteInsertViewModel em um ClienteDTO
             List<ProviderQueryViewModel> providerviewmodel =
-                mapper.Map<List<ProviderQueryViewModel>>(providers);
+                mapper.Map<List<ProviderQueryViewModel>>(response.Data);
             ViewBag.Providers = providerviewmodel;
             return View();
         }
@@ -75,7 +77,8 @@ namespace SuperMarketPresentationLayer.Controllers
         [HttpPost]
         public async Task<IActionResult> BuscarporEmail(ProviderQueryViewModel viewmodel)
         {
-            List<ProviderDTO> providers = await this._providerService.GetProviderbyEmail();
+            DataResponse<ProviderDTO> response = new DataResponse<ProviderDTO>();
+            response.Data = await this._providerService.GetProviderbyEmail();
 
             var configuration = new MapperConfiguration(cfg =>
             {
@@ -85,7 +88,7 @@ namespace SuperMarketPresentationLayer.Controllers
             // new SERService().GetSERByID(4);
             //Transforma o ClienteInsertViewModel em um ClienteDTO
             List<ProviderQueryViewModel> providerviewmodel =
-                mapper.Map<List<ProviderQueryViewModel>>(providers);
+                mapper.Map<List<ProviderQueryViewModel>>(response.Data);
             ViewBag.Providers = providerviewmodel;
             return View();
         }

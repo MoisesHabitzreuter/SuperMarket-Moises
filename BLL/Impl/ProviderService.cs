@@ -2,6 +2,7 @@
 using DAL;
 using DAL.Interfaces;
 using DTO;
+using DTO.Responses;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,10 +22,39 @@ namespace BLL.Impl
             this._providerRepository = providerRepository;
         }
 
-        public async Task<List<ProviderDTO>> GetProvider()
+        
+        public async Task<DataResponse<ProviderDTO>> GetProviderbyCNPJ(string cnpj)
         {
-            return await this._providerRepository.GetProviders();
+            DataResponse<ProviderDTO> response = new DataResponse<ProviderDTO>();
+            try
+            {
+                response.Success = true;
+                response.Data = await _providerRepository.GetProviderByCNPJ(cnpj);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                File.WriteAllText("Log.txt", ex.Message);
+                return response;
+            }
+        }
 
+        public async Task<DataResponse<ProviderDTO>> GetProviderbyEmail(string email)
+        {
+            DataResponse<ProviderDTO> response = new DataResponse<ProviderDTO>();
+            try
+            {
+                response.Success = true;
+                response.Data = await this._providerRepository.GetProviderByEmail(email);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                File.WriteAllText("Log.txt", ex.Message);
+                return response;
+            }
         }
 
         public async Task<Response> Insert(ProviderDTO provider)
@@ -62,6 +92,23 @@ namespace BLL.Impl
                 response.Success = false;
                 File.WriteAllText("Log.txt", ex.Message);
                 return response;
+            }
+        }
+
+        public async Task<DataResponse<List<ProviderDTO>>> GetProvider()
+        {
+            DataResponse<List<ProviderDTO>> dataResponse = new DataResponse<List<ProviderDTO>>();
+            try
+            {
+                dataResponse.Success = true;
+                dataResponse.Data = await _providerRepository.GetProviders();
+                return dataResponse;
+            }
+            catch (Exception ex)
+            {
+                dataResponse.Success = false;
+                File.WriteAllText("Log.txt", ex.Message);
+                return dataResponse;
             }
         }
     }

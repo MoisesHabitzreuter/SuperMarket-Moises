@@ -48,9 +48,9 @@ namespace BLL.Impl
             }
         }
 
-        public async Task<DataResponse> GetBrands()
+        public async Task<DataResponse<List<BrandDTO>>> GetBrands()
         {
-            DataResponse dataResponse = new DataResponse();
+            DataResponse<List<BrandDTO>> dataResponse = new DataResponse<List<BrandDTO>>();
             try
             {
                 dataResponse.Success = true;

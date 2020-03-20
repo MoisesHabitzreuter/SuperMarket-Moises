@@ -10,7 +10,7 @@ namespace BLL.Interfaces
     public interface ICategoryService
     {
         Task<Response> Insert(CategoryDTO category);
-        Task<DataResponse> GetCategory();
+        Task<DataResponse<List<CategoryDTO>>> GetCategory();
 
 
     }

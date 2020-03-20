@@ -3,6 +3,7 @@ using Commom.Security;
 using DAL;
 using DAL.Interfaces;
 using DTO;
+using DTO.Responses;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -37,38 +38,38 @@ namespace BLL.Impl
             }
         }
 
-        public async Task<List<UserDTO>> GetUser()
+
+        public async Task<DataResponse<UserDTO>> GetUserByEmail(string email)
         {
-            return await this._userRepository.GetUsers();
+            DataResponse<UserDTO> response = new DataResponse<UserDTO>();
+            try
+            {
+                response.Success = true;
+                response.Data = await _userRepository.GetUserByEmail(email);
+                return response;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public async Task<Response> Insert(UserDTO user)
         {
-            
-                Response response = new Response();
-
-                if (string.IsNullOrWhiteSpace(user.Name))
-                {
-                    response.Errors.Add("O nome deve ser informado");
-                }
-                else if (user.Name.Length < 2 && user.Name.Length > 45)
-                {
-                    response.Errors.Add("O nome deve conter entre 2 e 45 caracteres");
-                    response.Success = false;
-                    return response;
-                }
-
-                if (response.Errors.Count != 0)
-                {
-                    response.Success = false;
-                    return response;
-                }
-
+            Response response = new Response();
+            response.Errors = Validate(user);
+            if (response.Errors.Count != 0)
+            {
+                response.Success = false;
+                return response;
+            }
+            else
+            {
                 try
                 {
-                await this._userRepository.Insert(user);
-                    
                     response.Success = true;
+                    await this._userRepository.Insert(user);
                     return response;
                 }
                 catch (Exception ex)
@@ -79,6 +80,7 @@ namespace BLL.Impl
                     return response;
                 }
             }
+        }
 
         public List<string> Validate(UserDTO obj)
         {
@@ -95,6 +97,11 @@ namespace BLL.Impl
 
             }
             return errors;
+        }
+
+        Task<DataResponse<UserDTO>> IUserService.GetUser()
+        {
+            throw new NotImplementedException();
         }
     }
     }

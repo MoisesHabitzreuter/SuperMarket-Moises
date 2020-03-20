@@ -7,6 +7,7 @@ using AutoMapper;
 using BLL.Impl;
 using BLL.Interfaces;
 using DTO;
+using DTO.Responses;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -60,17 +61,18 @@ namespace SuperMarketPresentationLayer.Controllers
         [HttpPost]
         public async Task<IActionResult> BuscarporEmail(UserQueryViewModel viewmodel)
         {
-            List<UserDTO> sales = await this._userService.GetUserByEmail();
+            DataResponse<UserDTO> response = new DataResponse<UserDTO>();
+            response.Data = await _userService.GetUserByEmail();
 
             var configuration = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<ProviderDTO, UserQueryViewModel>();
+                cfg.CreateMap<UserDTO, UserQueryViewModel>();
             });
             IMapper mapper = configuration.CreateMapper();
             // new SERService().GetSERByID(4);
             //Transforma o ClienteInsertViewModel em um ClienteDTO
             List<UserQueryViewModel> userqueryviewmodel =
-                mapper.Map<List<UserQueryViewModel>>(sales);
+                mapper.Map<List<UserQueryViewModel>>(response.Data);
             ViewBag.Users = userqueryviewmodel;
             return View();
         }

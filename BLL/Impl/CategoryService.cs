@@ -19,13 +19,13 @@ namespace BLL.Impl
         {
             this._categoryRepository = categoryrepository;
         }
-        public async Task<DataResponse> GetCategory()
+        public async Task<DataResponse<List<CategoryDTO>>> GetCategory()
         {
-            DataResponse response = new DataResponse();
+            DataResponse<List<CategoryDTO>> response = new DataResponse<List<CategoryDTO>>();
             try
             {
-                response.Data = await _categoryRepository.GetCategories();
                 response.Success = true;
+                response.Data = await _categoryRepository.GetCategories();
                 return response;
             }
             catch (Exception ex)
