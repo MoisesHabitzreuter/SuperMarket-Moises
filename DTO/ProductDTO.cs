@@ -25,6 +25,10 @@ namespace DTO
             this.Price = price;
             this.IsActive = IsActive;
         }
+        public ProductDTO()
+        {
+
+        }
 
     }
 }

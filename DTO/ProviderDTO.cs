@@ -24,5 +24,9 @@ namespace DTO
             this.IsActive = isActive;
 
         }
+        public ProviderDTO()
+        {
+
+        }
     }
 }

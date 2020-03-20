@@ -13,11 +13,11 @@ namespace BLL.Impl
 {
     public class ProviderService : IProviderService
     {
-        
+
         private IProviderRepository _providerRepository;
         public ProviderService(IProviderRepository providerRepository)
         {
-            
+
             this._providerRepository = providerRepository;
         }
 
@@ -29,43 +29,41 @@ namespace BLL.Impl
 
         public async Task<Response> Insert(ProviderDTO provider)
         {
-            
-                Response response = new Response();
 
-                if (string.IsNullOrWhiteSpace(provider.FantasyName))
-                {
-                    response.Errors.Add("O nome fantasia deve ser informado");
-                }
-                else if (provider.FantasyName.Length < 2 && provider.FantasyName.Length > 50)
-                {
-                    response.Errors.Add("O nome fantasia deve conter entre 2 e 50 caracteres");
-                    response.Success = false;
-                    return response;
-                }
+            Response response = new Response();
 
-                if (response.Errors.Count != 0)
-                {
-                    response.Success = false;
-                    return response;
-                }
+            if (string.IsNullOrWhiteSpace(provider.FantasyName))
+            {
+                response.Errors.Add("O nome fantasia deve ser informado");
+            }
+            else if (provider.FantasyName.Length < 2 && provider.FantasyName.Length > 50)
+            {
+                response.Errors.Add("O nome fantasia deve conter entre 2 e 50 caracteres");
+                response.Success = false;
+                return response;
+            }
 
-                try
-                {
+            if (response.Errors.Count != 0)
+            {
+                response.Success = false;
+                return response;
+            }
+
+            try
+            {
                 await this._providerRepository.Insert(provider);
-                    
-                    response.Success = true;
-                    return response;
-                }
-                catch (Exception ex)
-                {
-                    response.Errors.Add("Erro no banco contate o adm");
-                    response.Success = false;
-                    File.WriteAllText("Log.txt", ex.Message);
-                    return response;
-                }
+
+                response.Success = true;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Errors.Add("Erro no banco contate o adm");
+                response.Success = false;
+                File.WriteAllText("Log.txt", ex.Message);
+                return response;
             }
         }
-
-        
     }
+}
 

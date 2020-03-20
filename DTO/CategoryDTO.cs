@@ -17,6 +17,10 @@ namespace DTO
             this.ID = id;
             this.Name = name;
         }
+        public CategoryDTO()
+        {
+
+        }
 
     }
 }

@@ -6,6 +6,7 @@ using AutoMapper;
 using BLL.Impl;
 using BLL.Interfaces;
 using DTO;
+using DTO.Responses;
 using Microsoft.AspNetCore.Mvc;
 using SuperMarketPresentationLayer.Models;
 
@@ -26,9 +27,10 @@ namespace SuperMarketPresentationLayer.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> Buscarporcpf(EmployeeQueryViewModel viewmodel)
+        public async Task<IActionResult> Buscarporcpf(string cpf)
         {
-            List<EmployeeDTO> employees = await this._employeeService.GetEmployeeByCPF();
+            DataResponse response = new DataResponse();
+            response = await _employeeService.GetEmployeeByCPF(cpf);
 
             var configuration = new MapperConfiguration(cfg =>
             {
@@ -38,7 +40,7 @@ namespace SuperMarketPresentationLayer.Controllers
             // new SERService().GetSERByID(4);
             //Transforma o ClienteInsertViewModel em um ClienteDTO
             List<EmployeeQueryViewModel> employeeviewmodel =
-                mapper.Map<List<EmployeeQueryViewModel>>(employees);
+                mapper.Map<List<EmployeeQueryViewModel>>(response.Data);
             ViewBag.Employees = employeeviewmodel;
             return View();
         }
@@ -46,29 +48,14 @@ namespace SuperMarketPresentationLayer.Controllers
         {
             return View();
         }
-        public async Task<IActionResult> Buscarporrg(EmployeeQueryViewModel viewmodel)
-        {
-            List<EmployeeDTO> employees = await this._employeeService.GetEmployeeByRG();
-
-            var configuration = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<EmployeeDTO, EmployeeQueryViewModel>();
-            });
-            IMapper mapper = configuration.CreateMapper();
-            // new SERService().GetSERByID(4);
-            //Transforma o ClienteInsertViewModel em um ClienteDTO
-            List<EmployeeQueryViewModel> employeeviewmodel =
-                mapper.Map<List<EmployeeQueryViewModel>>(employees);
-            ViewBag.Employees = employeeviewmodel;
-            return View();
-        }
         public IActionResult Buscarporemail()
         {
             return View();
         }
-        public async Task<IActionResult> Buscarporemail(EmployeeQueryViewModel viewmodel)
+        public async Task<IActionResult> Buscarporemail(string email)
         {
-            List<EmployeeDTO> employees = await this._employeeService.GetEmployeeByEmail();
+            DataResponse response = new DataResponse();
+            response = await this._employeeService.GetEmployeeByEmail(email);
 
             var configuration = new MapperConfiguration(cfg =>
             {
@@ -78,7 +65,7 @@ namespace SuperMarketPresentationLayer.Controllers
             // new SERService().GetSERByID(4);
             //Transforma o ClienteInsertViewModel em um ClienteDTO
             List<EmployeeQueryViewModel> employeeviewmodel =
-                mapper.Map<List<EmployeeQueryViewModel>>(employees);
+                mapper.Map<List<EmployeeQueryViewModel>>(response.Data);
             ViewBag.Employees = employeeviewmodel;
             return View();
         }

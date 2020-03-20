@@ -1,4 +1,5 @@
 ﻿using DTO;
+using DTO.Responses;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +10,7 @@ namespace BLL.Interfaces
     public interface ICategoryService
     {
         Task<Response> Insert(CategoryDTO category);
-        Task<List<CategoryDTO>> GetCategory();
+        Task<DataResponse> GetCategory();
 
 
     }

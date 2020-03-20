@@ -6,6 +6,7 @@ using AutoMapper;
 using BLL.Impl;
 using BLL.Interfaces;
 using DTO;
+using DTO.Responses;
 using Microsoft.AspNetCore.Mvc;
 using SuperMarketPresentationLayer.Models;
 
@@ -36,7 +37,7 @@ namespace SuperMarketPresentationLayer.Controllers
 
             try
             {
-                await _brandService.GetBrands(dto);
+                await _brandService.GetBrands();
                 return RedirectToAction("Index", "Category");
             }
             catch (Exception ex)
@@ -75,6 +76,18 @@ namespace SuperMarketPresentationLayer.Controllers
                 ViewBag.Erros = ex.Message;
             }
             return View();
+        }
+        public async Task<IActionResult> Get()
+        {
+            DataResponse response = new DataResponse();
+            response = await _brandService.GetBrands();
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<BrandDTO, BrandQueryViewModel>();
+            });
+            IMapper mapper = configuration.CreateMapper();
+            List<BrandQueryViewModel> dados = mapper.Map<List<BrandQueryViewModel>>(response.Data);
+            return View(dados);
         }
     }
 

@@ -80,7 +80,7 @@ namespace BLL.Impl
                 }
             }
 
-        public List<string> validate(UserDTO obj)
+        public List<string> Validate(UserDTO obj)
         {
             Response response = new Response();
             List<string> errors = new List<string>();

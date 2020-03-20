@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BLL.Impl
+namespace BLL.Interfaces
 {
     public interface IService<T>
     {
-        List<string> validate(T obj);
+        List<string> Validate(T obj);
     }
 }
