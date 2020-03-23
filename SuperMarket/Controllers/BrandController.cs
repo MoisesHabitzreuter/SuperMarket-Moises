@@ -88,6 +88,32 @@ namespace SuperMarketPresentationLayer.Controllers
             List<BrandQueryViewModel> dados = mapper.Map<List<BrandQueryViewModel>>(response.Data);
             return View(dados);
         }
+        public IActionResult Update()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Update(BrandInsertViewModel viewModel)
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<EmployeeUpdateViewModel, EmployeeDTO>();
+            });
+            IMapper mapper = configuration.CreateMapper();
+            // new SERService().GetSERByID(4);
+            //Transforma o ClienteInsertViewModel em um ClienteDTO
+            EmployeeDTO dto = mapper.Map<EmployeeDTO>(viewModel);
+            try
+            {
+                
+                return RedirectToAction("Index", "Client");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Erros = ex.Message;
+            }
+            return View();
+        }
     }
 
 }

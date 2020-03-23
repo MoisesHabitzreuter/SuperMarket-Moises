@@ -25,7 +25,7 @@ namespace SuperMarketPresentationLayer.Controllers
             this._providerService = providerService;
             this._productService = productService;
         }
-        
+
         public IActionResult Index()
         {
             return View();
@@ -51,28 +51,28 @@ namespace SuperMarketPresentationLayer.Controllers
             ViewBag.Products = productviewmodel;
             return View();
         }
-        public IActionResult BuscarporMarca()
-        {
-            return View();
-        }
-        [HttpPost]
-        public async Task<IActionResult> Buscarpormarca(ProductQueryViewModel viewmodel)
-        {
+     //   public IActionResult BuscarporMarca()
+      //  {
+      //      return View();
+      //  }
+      //  [HttpPost]
+    // public async Task<IActionResult> Buscarpormarca(ProductQueryViewModel viewmodel)
+       // {
             //todo:Verificar este método
-            DataResponse<ProductDTO> response = await this._productService.GetProductbyBrand();
+         //   DataResponse<ProductDTO> response = await this._productService.GetProductsByCategory();
             //todo: kkkkkk html
-            var configuration = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<ProductDTO, ProductQueryViewModel>();
-            });
-            IMapper mapper = configuration.CreateMapper();
-            // new SERService().GetSERByID(4);
-            //Transforma o ClienteInsertViewModel em um ClienteDTO
-            List<ProductQueryViewModel> productviewmodel =
-                mapper.Map<List<ProductQueryViewModel>>(response.Data);
-            ViewBag.Products = productviewmodel;
-            return View();
-        }
+          //  var configuration = new MapperConfiguration(cfg =>
+          //  {
+          //      cfg.CreateMap<ProductDTO, ProductQueryViewModel>();
+          //  });
+         //   IMapper mapper = configuration.CreateMapper();
+         //   // new SERService().GetSERByID(4);
+         //   //Transforma o ClienteInsertViewModel em um ClienteDTO
+         //   List<ProductQueryViewModel> productviewmodel =
+         //       mapper.Map<List<ProductQueryViewModel>>(response.Data);
+         //   ViewBag.Products = productviewmodel;
+         //   return View();
+      //  }
         public IActionResult Buscarporcategoria()
         {
             return View();
@@ -126,6 +126,32 @@ namespace SuperMarketPresentationLayer.Controllers
             }
             return View();
             
+        }
+        public IActionResult Update()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Update(ProductInsertViewModel viewModel)
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<ProductInsertViewModel, ProductDTO>();
+            });
+            IMapper mapper = configuration.CreateMapper();
+            // new SERService().GetSERByID(4);
+            //Transforma o ClienteInsertViewModel em um ClienteDTO
+            ProductDTO dto = mapper.Map<ProductDTO>(viewModel);
+            try
+            {
+                await _productService.Update(dto);
+                return RedirectToAction("Index", "Client");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Erros = ex.Message;
+            }
+            return View();
         }
     }
 }

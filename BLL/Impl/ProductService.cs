@@ -76,6 +76,43 @@ namespace BLL.Impl
                     return response;
                 }
             }
+        public async Task<Response> Update(ProductDTO product)
+        {
+
+            Response response = new Response();
+
+            if (string.IsNullOrWhiteSpace(product.Description))
+            {
+                response.Errors.Add("O nome do produto deve ser informado");
+            }
+            else if (product.Description.Length < 2 && product.Description.Length > 40)
+            {
+                response.Errors.Add("O nome do produto deve conter entre 2 e 40 caracteres");
+                response.Success = false;
+                return response;
+            }
+
+            if (response.Errors.Count != 0)
+            {
+                response.Success = false;
+                return response;
+            }
+
+            try
+            {
+                await this._productRepository.Update(product);
+
+                response.Success = true;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Errors.Add("Erro no banco contate o adm");
+                response.Success = false;
+                File.WriteAllText("Log.txt", ex.Message);
+                return response;
+            }
+        }
 
         public async Task<DataResponse<List<ProductDTO>>> GetProduct()
         {
