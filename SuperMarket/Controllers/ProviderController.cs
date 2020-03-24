@@ -27,26 +27,16 @@ namespace SuperMarketPresentationLayer.Controllers
         {
             return View();
         }
-        public IActionResult Buscar()
-        {
-            return View();
-        }
-        [HttpPost]
         public async Task<IActionResult> Buscar(ProviderQueryViewModel viewmodel)
         {
-            DataResponse<List<ProviderDTO>> response = await this._providerService.GetProvider();
-
+            DataResponse<List<ProviderDTO>> response = await _providerService.GetProvider();
             var configuration = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<ProviderDTO, ProviderQueryViewModel>();
             });
             IMapper mapper = configuration.CreateMapper();
-            // new SERService().GetSERByID(4);
-            //Transforma o ClienteInsertViewModel em um ClienteDTO
-            List<ProviderQueryViewModel> providerviewmodel =
-                mapper.Map<List<ProviderQueryViewModel>>(response.Data);
-            ViewBag.Providers = providerviewmodel;
-            return View();
+            List<ProviderQueryViewModel> dados = mapper.Map<List<ProviderQueryViewModel>>(response.Data);
+            return View(dados);
         }
         public IActionResult BuscarporCNPJ()
         {

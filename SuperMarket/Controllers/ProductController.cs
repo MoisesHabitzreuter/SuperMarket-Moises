@@ -76,19 +76,14 @@ namespace SuperMarketPresentationLayer.Controllers
         [HttpPost]
         public async Task<IActionResult> Buscarporcategoria(ProductQueryViewModel viewmodel)
         {
-            DataResponse<List<ProductDTO>> response = await this._productService.GetProductsByCategory(viewmodel.Category);
-
+            DataResponse<List<ProductDTO>> response = await _productService.GetProductsByCategory(viewmodel.Category);
             var configuration = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<ProductDTO, ProductQueryViewModel>();
             });
             IMapper mapper = configuration.CreateMapper();
-            // new SERService().GetSERByID(4);
-            //Transforma o ClienteInsertViewModel em um ClienteDTO
-            List<ProductQueryViewModel> productviewmodel =
-                mapper.Map<List<ProductQueryViewModel>>(response.Data);
-            ViewBag.Products = productviewmodel;
-            return View();
+            List<ProductQueryViewModel> dados = mapper.Map<List<ProductQueryViewModel>>(response.Data);
+            return View(dados);
         }
         public async Task<IActionResult> Insert()
         {
