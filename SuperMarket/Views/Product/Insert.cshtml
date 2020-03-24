@@ -18,7 +18,7 @@
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-
+            
             <div class="form-group">
                 <label asp-for="BrandID" class="control-label"></label>
                 <select class="js-example-basic-single form-control" style="height:33px" name="BrandID">
@@ -35,7 +35,7 @@
                 <select class="js-example-basic-single form-control" name="ProviderID">
                     @foreach (var item in ViewBag.Provider.Data)
                     {
-                        <option class="control-label" value="@item.ID" style="height: 33px;">@item.FantasyName</option>
+                        <option value="@item.ID" style="height: 33px;">@item.FantasyName</option>
                     }
                 </select>
                 <span asp-validation-for="ProviderID" class="text-danger"></span>
