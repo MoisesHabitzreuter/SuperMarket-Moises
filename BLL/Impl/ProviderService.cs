@@ -108,11 +108,23 @@ namespace BLL.Impl
             List<string> errors = new List<string>();
             if (string.IsNullOrWhiteSpace(obj.FantasyName))
             {
-                errors.Add("O Produto deve ser informado");
+                errors.Add("O Nome do fornecedor deve ser informado");
             }
             else if (obj.FantasyName.Length < 2 && obj.FantasyName.Length > 45)
             {
-                errors.Add("O Produto deve conter entre 2 e 45 caracteres");
+                errors.Add("O Nome do fornecedor deve conter entre 2 e 45 caracteres");
+            }
+            if (string.IsNullOrEmpty(obj.CNPJ))
+            {
+                errors.Add("O CNPJ do fornecedor deve ser informada");
+            }
+            if (string.IsNullOrEmpty(obj.Phone))
+            {
+                errors.Add("O numero de telefone deve ser informado");
+            }
+            if (string.IsNullOrEmpty(obj.Email))
+            {
+                errors.Add("O Email deve ser informado");
             }
             return errors;
         }

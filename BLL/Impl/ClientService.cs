@@ -68,6 +68,19 @@ namespace BLL.Impl
             {
                 errors.Add("A senha deve ser informada");
             }
+            if (string.IsNullOrEmpty(obj.Phone))
+            {
+                errors.Add("O numero de telefone deve ser informado");
+            }
+            if (string.IsNullOrEmpty(obj.RG))
+            {
+                errors.Add("O RG do cliente deve ser informado");
+            }
+            if (string.IsNullOrEmpty(obj.Email))
+            {
+                errors.Add("O Email deve ser informado");
+            }
+            
             return errors;
         }
 
@@ -110,7 +123,9 @@ namespace BLL.Impl
                 File.WriteAllText("Log.txt", ex.Message);
                 return response;
             }
+
         }
+        
     }
 }
 

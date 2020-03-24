@@ -136,6 +136,23 @@ namespace BLL.Impl
             {
                 errors.Add("O funcionário deve conter entre 2 e 45 caracteres");
             }
+            if (string.IsNullOrEmpty(obj.Password))
+            {
+                errors.Add("A senha deve ser informada");
+            }
+            if (string.IsNullOrEmpty(obj.Phone))
+            {
+                errors.Add("O numero de telefone deve ser informado");
+            }
+            if (string.IsNullOrEmpty(obj.RG))
+            {
+                errors.Add("O RG do Funcionario deve ser informado");
+            }
+            if (string.IsNullOrEmpty(obj.Email))
+            {
+                errors.Add("O Email deve ser informado");
+            }
+            
             return errors;
         }
     }

@@ -97,6 +97,9 @@ namespace BLL.Impl
                 errors.Add("O nome deve conter entre 2 e 45 caracteres");
 
             }
+
+
+
             return errors;
         }
 
