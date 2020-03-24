@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Impl
 {
-    public class ProductService : IProductService
+    public class ProductService : IProductService,IService<ProductDTO>
     {
         
         private IProductRepository _productRepository;
@@ -43,18 +43,7 @@ namespace BLL.Impl
         {
             
                 Response response = new Response();
-
-                if (string.IsNullOrWhiteSpace(product.Description))
-                {
-                    response.Errors.Add("O nome do produto deve ser informado");
-                }
-                else if (product.Description.Length < 2 && product.Description.Length > 40)
-                {
-                    response.Errors.Add("O nome do produto deve conter entre 2 e 40 caracteres");
-                    response.Success = false;
-                    return response;
-                }
-
+            response.Errors = Validate(product);
                 if (response.Errors.Count != 0)
                 {
                     response.Success = false;
@@ -81,16 +70,7 @@ namespace BLL.Impl
 
             Response response = new Response();
 
-            if (string.IsNullOrWhiteSpace(product.Description))
-            {
-                response.Errors.Add("O nome do produto deve ser informado");
-            }
-            else if (product.Description.Length < 2 && product.Description.Length > 40)
-            {
-                response.Errors.Add("O nome do produto deve conter entre 2 e 40 caracteres");
-                response.Success = false;
-                return response;
-            }
+            response.Errors = Validate(product);
 
             if (response.Errors.Count != 0)
             {
@@ -129,6 +109,19 @@ namespace BLL.Impl
                 await File.AppendAllTextAsync("Log.txt", ex.Message);
                 return response;
             }
+        }
+        public List<string> Validate(ProductDTO obj)
+        {
+            List<string> errors = new List<string>();
+            if (string.IsNullOrWhiteSpace(obj.Description))
+            {
+                errors.Add("O Produto deve ser informado");
+            }
+            else if (obj.Description.Length < 2 && obj.Description.Length > 45)
+            {
+                errors.Add("O Produto deve conter entre 2 e 45 caracteres");
+            }
+            return errors;
         }
     }
 }

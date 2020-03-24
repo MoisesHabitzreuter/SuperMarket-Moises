@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Impl
 {
-    public class ProviderService : IProviderService
+    public class ProviderService : IProviderService,IService<ProviderDTO>
     {
 
         private IProviderRepository _providerRepository;
@@ -61,17 +61,8 @@ namespace BLL.Impl
         {
 
             Response response = new Response();
-
-            if (string.IsNullOrWhiteSpace(provider.FantasyName))
-            {
-                response.Errors.Add("O nome fantasia deve ser informado");
-            }
-            else if (provider.FantasyName.Length < 2 && provider.FantasyName.Length > 50)
-            {
-                response.Errors.Add("O nome fantasia deve conter entre 2 e 50 caracteres");
-                response.Success = false;
-                return response;
-            }
+            response.Errors = Validate(provider);
+            
 
             if (response.Errors.Count != 0)
             {
@@ -110,6 +101,20 @@ namespace BLL.Impl
                 File.WriteAllText("Log.txt", ex.Message);
                 return dataResponse;
             }
+        }
+
+        public List<string> Validate(ProviderDTO obj)
+        {
+            List<string> errors = new List<string>();
+            if (string.IsNullOrWhiteSpace(obj.FantasyName))
+            {
+                errors.Add("O Produto deve ser informado");
+            }
+            else if (obj.FantasyName.Length < 2 && obj.FantasyName.Length > 45)
+            {
+                errors.Add("O Produto deve conter entre 2 e 45 caracteres");
+            }
+            return errors;
         }
     }
 }
