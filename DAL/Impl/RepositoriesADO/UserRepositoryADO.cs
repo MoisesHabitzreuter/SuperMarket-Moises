@@ -25,6 +25,8 @@ namespace DAL.Impl
             SqlCommand command = new SqlCommand();
             command.CommandText = "SELECT * FROM USERS WHERE EMAIL = @EMAIL AND PASSWORD = @PASSWORD ";
             command.Connection = connection;
+            command.Parameters.AddWithValue("@EMAIL", email);
+            command.Parameters.AddWithValue("@PASSWORD", passWord);
             try
             {
                 await connection.OpenAsync();
@@ -59,8 +61,9 @@ namespace DAL.Impl
             SqlConnection connection = new SqlConnection();
             connection.ConnectionString = _options.ConnectionString;
             SqlCommand command = new SqlCommand();
-            command.CommandText = "SELECT * FROM USERS WHERE EMAIL LIKE @EMAIL";
+            command.CommandText = "SELECT * FROM USERS WHERE EMAIL = @EMAIL";
             command.Connection = connection;
+            command.Parameters.AddWithValue("@EMAIL", email);
             try
             {
                 await connection.OpenAsync();
@@ -158,6 +161,7 @@ namespace DAL.Impl
             connection.ConnectionString = _options.ConnectionString;
             SqlCommand command = new SqlCommand();
             command.CommandText = "UPDATE USERS SET EMAIL = @EMAIL,PASSWORD = @PASSWORD, NAME = @NAME, ISACTIVE = @ISACTIVE WHERE ID = @ID";
+            command.Parameters.AddWithValue("@ID", user.ID);
             command.Parameters.AddWithValue(@"EMAIL", user.Email);
             command.Parameters.AddWithValue(@"PASSWORD", user.Password);
             command.Parameters.AddWithValue(@"NAME", user.Name);

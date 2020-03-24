@@ -196,7 +196,8 @@ namespace DAL.Impl
             SqlConnection connection = new SqlConnection();
             connection.ConnectionString = _options.ConnectionString;
             SqlCommand command = new SqlCommand();
-            command.CommandText = "UPDATE PRODUCTS SET DESCRIPTION = @DESCRIPTION,PROVIDER = @PROVIDER,BRAND = @BRAND,PRICE = @PRICE WHERE ID = @ID";
+            command.CommandText = "UPDATE PRODUCTS SET DESCRIPTION = @DESCRIPTION, PROVIDER = @PROVIDER, BRAND = @BRAND, PRICE = @PRICE WHERE ID = @ID";
+            command.Parameters.AddWithValue(@"ID", product.ID);
             command.Parameters.AddWithValue(@"DESCRIPTION", product.Description);
             command.Parameters.AddWithValue(@"PROVIDER", product.Provider);
             command.Parameters.AddWithValue(@"BRAND", product.Brand);

@@ -22,8 +22,9 @@ namespace DAL.Impl
             SqlConnection connection = new SqlConnection();
             connection.ConnectionString = _options.ConnectionString;
             SqlCommand command = new SqlCommand();
-            command.CommandText = "SELECT * FROM PROVIDERS WHERE CNPJ LIKE @CNPJ";
+            command.CommandText = "SELECT * FROM PROVIDERS WHERE CNPJ = @CNPJ";
             command.Connection = connection;
+            command.Parameters.AddWithValue("@CNPJ", cnpj);
             try
             {
                 await connection.OpenAsync();
@@ -61,6 +62,7 @@ namespace DAL.Impl
             SqlCommand command = new SqlCommand();
             command.CommandText = "SELECT * FROM PROVIDERS WHERE EMAIL LIKE @EMAIL";
             command.Connection = connection;
+            command.Parameters.AddWithValue("@EMAIL", email);
             try
             {
                 await connection.OpenAsync();
@@ -79,41 +81,6 @@ namespace DAL.Impl
                 {
                     return null;
                 }
-            }
-            catch (Exception ex)
-            {
-                File.WriteAllText("log.txt", ex.Message);
-                return null;
-            }
-            finally
-            {
-                await connection.DisposeAsync();
-            }
-        }
-
-        public async Task<List<ProviderDTO>> GetProviderByCNPJ()
-        {
-            SqlConnection connection = new SqlConnection();
-            connection.ConnectionString = _options.ConnectionString;
-            SqlCommand command = new SqlCommand();
-            command.CommandText = "SELECT * FROM PROVIDERS";
-            command.Connection = connection;
-            try
-            {
-                await connection.OpenAsync();
-                SqlDataReader reader = command.ExecuteReader();
-                List<ProviderDTO> providers = new List<ProviderDTO>();
-                while (reader.Read())
-                {
-                    ProviderDTO provider = new ProviderDTO(Convert.ToInt32(reader["ID"]),
-                                       (string)reader["NAMEFANTASY"],
-                                       (string)reader["EMAIL"],
-                                       (string)reader["CNPJ"],
-                                       (string)reader["PHONE"],
-                                       (bool)reader["ISACTIVE"]);
-                    providers.Add(provider);
-                }
-                return providers;
             }
             catch (Exception ex)
             {
@@ -160,6 +127,7 @@ namespace DAL.Impl
             connection.ConnectionString = _options.ConnectionString;
             SqlCommand command = new SqlCommand();
             command.CommandText = "UPDATE PROVIDERS SET FANTASYNAME = @FANTASYNAME, EMAIL = @EMAIL,CNPJ = @CNPJ PHONE = @PHONE, ISACTIVE = @ISACTIVE WHERE ID = @ID";
+            command.Parameters.AddWithValue("@ID", provider.ID);
             command.Parameters.AddWithValue(@"FANTASYNAME", provider.FantasyName);
             command.Parameters.AddWithValue(@"EMAIL", provider.Email);
             command.Parameters.AddWithValue(@"PHONE", provider.Phone);

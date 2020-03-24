@@ -25,10 +25,10 @@ namespace SuperMarketPresentationLayer.Controllers
             DataResponse<List<CategoryDTO>> response = await _categoryService.GetCategory();
             var configuration = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<BrandDTO, BrandQueryViewModel>();
+                cfg.CreateMap<CategoryDTO, CategoryQueryViewModel>();
             });
             IMapper mapper = configuration.CreateMapper();
-            List<BrandQueryViewModel> dados = mapper.Map<List<BrandQueryViewModel>>(response.Data);
+            List<CategoryQueryViewModel> dados = mapper.Map<List<CategoryQueryViewModel>>(response.Data);
             return View(dados);
         }
         public IActionResult Insert()
@@ -46,9 +46,10 @@ namespace SuperMarketPresentationLayer.Controllers
             // new SERService().GetSERByID(4);
             //Transforma o ClienteInsertViewModel em um ClienteDTO
             CategoryDTO dto = mapper.Map<CategoryDTO>(viewModel);
+
             try
             {
-                await this._categoryService.Insert(dto);
+                await _categoryService.Insert(dto);
                 return RedirectToAction("Index", "Category");
             }
             catch (Exception ex)

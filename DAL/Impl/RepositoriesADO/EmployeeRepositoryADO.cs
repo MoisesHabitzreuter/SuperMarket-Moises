@@ -23,8 +23,9 @@ namespace DAL.Impl
             SqlConnection connection = new SqlConnection();
             connection.ConnectionString = _options.ConnectionString;
             SqlCommand command = new SqlCommand();
-            command.CommandText = "SELECT * FROM CLIENTS WHERE CPF LIKE @CPF";
+            command.CommandText = "SELECT * FROM CLIENTS WHERE CPF = @CPF";
             command.Connection = connection;
+            command.Parameters.AddWithValue("@CPF", cpf);
             SqlDataReader reader = command.ExecuteReader();
             if (await reader.ReadAsync())
             {
@@ -53,34 +54,7 @@ namespace DAL.Impl
             SqlCommand command = new SqlCommand();
             command.CommandText = "SELECT * FROM CLIENTS WHERE EMAIL LIKE @EMAIL";
             command.Connection = connection;
-            SqlDataReader reader = command.ExecuteReader();
-            if (await reader.ReadAsync())
-            {
-                EmployeeDTO client = new EmployeeDTO(Convert.ToInt32(reader["ID"]),
-                      (string)reader["NAME"],
-                      (string)reader["CPF"],
-                      (string)reader["EMAIL"],
-                      (string)reader["RG"],
-                      (string)reader["PHONE"],
-                      (DateTime)reader["DATEBIRTH"],
-                      (Function)reader["FUNCTION"],
-                      (bool)reader["ISACTIVE"]);
-                return client;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        public async Task<EmployeeDTO> GetEmployeeByRG(string rg)
-        {
-
-            SqlConnection connection = new SqlConnection();
-            connection.ConnectionString = _options.ConnectionString;
-            SqlCommand command = new SqlCommand();
-            command.CommandText = "SELECT * FROM CLIENTS WHERE RG LIKE @RG";
-            command.Connection = connection;
+            command.Parameters.AddWithValue("@EMAIL", email);
             SqlDataReader reader = command.ExecuteReader();
             if (await reader.ReadAsync())
             {
@@ -108,7 +82,6 @@ namespace DAL.Impl
             SqlCommand command = new SqlCommand();
             command.CommandText = "SELECT * FROM EMPLOYEES";
             command.Connection = connection;
-
             try
             {
                 await connection.OpenAsync();
@@ -178,6 +151,7 @@ namespace DAL.Impl
             connection.ConnectionString = _options.ConnectionString;
             SqlCommand command = new SqlCommand();
             command.CommandText = "UPDATE EMPLOYEES SET NOME = @NAME, EMAIL = @EMAIL, CPF = @CPF, RG = @RG, PHONE = @PHONE, DATEBIRTH = @DATEBIRTH, PASSWORD = @PASSWORD, ISACTIVE = @ISACTIVE WHERE ID = @ID";
+            command.Parameters.AddWithValue("@ID", employee.ID);
             command.Parameters.AddWithValue(@"NAME", employee.Name);
             command.Parameters.AddWithValue(@"EMAIL", employee.Email);
             command.Parameters.AddWithValue(@"CPF", employee.CPF);

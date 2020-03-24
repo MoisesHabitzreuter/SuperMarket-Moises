@@ -63,8 +63,9 @@ namespace DAL.Impl
             SqlConnection connection = new SqlConnection();
             connection.ConnectionString = _options.ConnectionString;
             SqlCommand command = new SqlCommand();
-            command.CommandText = "SELECT * FROM CLIENTS WHERE CPF LIKE @CPF";
+            command.CommandText = "SELECT * FROM CLIENTS WHERE CPF = @CPF";
             command.Connection = connection;
+            command.Parameters.AddWithValue("@CPF", cpf);
             SqlDataReader reader = command.ExecuteReader();
             if (await reader.ReadAsync())
             {
@@ -122,6 +123,7 @@ namespace DAL.Impl
             connection.ConnectionString = _options.ConnectionString;
             SqlCommand command = new SqlCommand();
             command.CommandText = "UPDATE CLIENTS SET NOME = @NAME, EMAIL = EMAIL, CPF = @CPF, RG = @RG, PHONE = @PHONE, DATEBIRTH = @DATEBIRTH, PASSWORD = @PASSWORD WHERE ID = @ID";
+            command.Parameters.AddWithValue("ID", client.ID); 
             command.Parameters.AddWithValue(@"NAME", client.Name);
             command.Parameters.AddWithValue(@"EMAIL", client.Email);
             command.Parameters.AddWithValue(@"CPF", client.CPF);

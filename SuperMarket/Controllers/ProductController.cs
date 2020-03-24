@@ -26,30 +26,30 @@ namespace SuperMarketPresentationLayer.Controllers
             this._productService = productService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
-        }
-        public IActionResult Buscar()
-        {
-            return View();
-        }
-        [HttpPost]
-        public async Task<IActionResult> Buscar(ProductQueryViewModel viewmodel)
-        {
-            DataResponse<List<ProductDTO>> response = await this._productService.GetProduct();
+            DataResponse<List<ProductDTO>> response = await _productService.GetProduct();
 
             var configuration = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<ProductDTO, ProductQueryViewModel>();
             });
             IMapper mapper = configuration.CreateMapper();
-            // new SERService().GetSERByID(4);
-            //Transforma o ClienteInsertViewModel em um ClienteDTO
-            List<ProductQueryViewModel> productviewmodel =
-                mapper.Map<List<ProductQueryViewModel>>(response.Data);
-            ViewBag.Products = productviewmodel;
-            return View();
+            List<ProductQueryViewModel> dados = mapper.Map<List<ProductQueryViewModel>>(response.Data);
+            return View(dados);
+        }
+
+        public async Task<IActionResult> Buscar(ProductQueryViewModel model)
+        {
+            DataResponse<List<ProductDTO>> response = await _productService.GetProduct();
+            
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<ProductDTO, ProductQueryViewModel>();
+            });
+            IMapper mapper = configuration.CreateMapper();
+            List<ProductQueryViewModel> dados = mapper.Map<List<ProductQueryViewModel>>(response.Data);
+            return View(dados);
         }
      //   public IActionResult BuscarporMarca()
       //  {
@@ -73,10 +73,6 @@ namespace SuperMarketPresentationLayer.Controllers
          //   ViewBag.Products = productviewmodel;
          //   return View();
       //  }
-        public IActionResult Buscarporcategoria()
-        {
-            return View();
-        }
         [HttpPost]
         public async Task<IActionResult> Buscarporcategoria(ProductQueryViewModel viewmodel)
         {
@@ -114,7 +110,6 @@ namespace SuperMarketPresentationLayer.Controllers
             // new SERService().GetSERByID(4);
             //Transforma o ClienteInsertViewModel em um ClienteDTO
             ProductDTO dto = mapper.Map<ProductDTO>(viewmodel);
-            
             try
             {
                 await _productService.Insert(dto);
