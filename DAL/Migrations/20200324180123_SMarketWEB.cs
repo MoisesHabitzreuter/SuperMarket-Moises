@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DAL.Migrations
 {
-    public partial class MarketWEB : Migration
+    public partial class SMarketWEB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -192,7 +192,8 @@ namespace DAL.Migrations
                 columns: table => new
                 {
                     ProductID = table.Column<int>(nullable: false),
-                    CategoryID = table.Column<int>(nullable: false)
+                    CategoryID = table.Column<int>(nullable: false),
+                    ID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -210,6 +211,43 @@ namespace DAL.Migrations
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BRANDS_Name",
+                table: "BRANDS",
+                column: "Name",
+                unique: true,
+                filter: "[Name] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CATEGORIES_Name",
+                table: "CATEGORIES",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CLIENTS_CPF",
+                table: "CLIENTS",
+                column: "CPF",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CLIENTS_Email",
+                table: "CLIENTS",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CLIENTS_Phone",
+                table: "CLIENTS",
+                column: "Phone",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CLIENTS_RG",
+                table: "CLIENTS",
+                column: "RG",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_EMPLOYEES_Email",

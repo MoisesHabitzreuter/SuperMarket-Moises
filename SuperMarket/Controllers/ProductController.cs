@@ -76,7 +76,7 @@ namespace SuperMarketPresentationLayer.Controllers
         [HttpPost]
         public async Task<IActionResult> Buscarporcategoria(ProductQueryViewModel viewmodel)
         {
-            DataResponse<List<ProductDTO>> response = await _productService.GetProductsByCategory(viewmodel.Category);
+            DataResponse<List<ProductDTO>> response = await _productService.GetProductsByCategory(viewmodel.CategoryID);
             var configuration = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<ProductDTO, ProductQueryViewModel>();

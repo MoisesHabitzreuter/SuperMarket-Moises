@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(MarketContext))]
-    [Migration("20200317182841_MarketWEB")]
-    partial class MarketWEB
+    [Migration("20200324180123_SMarketWEB")]
+    partial class SMarketWEB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -37,6 +37,10 @@ namespace DAL.Migrations
 
                     b.HasKey("ID");
 
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasFilter("[Name] IS NOT NULL");
+
                     b.ToTable("BRANDS");
                 });
 
@@ -53,6 +57,9 @@ namespace DAL.Migrations
                         .HasMaxLength(30);
 
                     b.HasKey("ID");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("CATEGORIES");
                 });
@@ -101,6 +108,18 @@ namespace DAL.Migrations
                         .HasMaxLength(9);
 
                     b.HasKey("ID");
+
+                    b.HasIndex("CPF")
+                        .IsUnique();
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("Phone")
+                        .IsUnique();
+
+                    b.HasIndex("RG")
+                        .IsUnique();
 
                     b.ToTable("CLIENTS");
                 });
@@ -195,6 +214,9 @@ namespace DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("CategoryID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ID")
                         .HasColumnType("int");
 
                     b.HasKey("ProductID", "CategoryID");

@@ -41,19 +41,18 @@ namespace BLL.Impl
 
         public async Task<Response> Insert(ProductDTO product)
         {
-            
-                Response response = new Response();
+            Response response = new Response();
             response.Errors = Validate(product);
-                if (response.Errors.Count != 0)
-                {
-                    response.Success = false;
-                    return response;
-                }
-
+            if (response.Errors.Count != 0)
+            {
+                response.Success = false;
+                return response;
+            }
+            else
+            {
                 try
                 {
-                await this._productRepository.Insert(product);
-                   
+                    await this._productRepository.Insert(product);
                     response.Success = true;
                     return response;
                 }
@@ -65,6 +64,7 @@ namespace BLL.Impl
                     return response;
                 }
             }
+        }
         public async Task<Response> Update(ProductDTO product)
         {
 
