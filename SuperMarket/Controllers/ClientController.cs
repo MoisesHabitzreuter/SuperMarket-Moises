@@ -10,6 +10,7 @@ using DTO;
 using DTO.Responses;
 using Microsoft.AspNetCore.Mvc;
 using SuperMarketPresentationLayer.Models;
+using SuperMarketPresentationLayer.Models.Updates;
 
 namespace SuperMarketPresentationLayer.Controllers
 {
@@ -20,21 +21,20 @@ namespace SuperMarketPresentationLayer.Controllers
         {
             this._clientService = clientService;
         }
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
+        {
+            return View();
+        }
+        public async Task<IActionResult> Buscar()
         {
             DataResponse<List<ClientDTO>> response = await _clientService.GetClient();
-
             var configuration = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<ClientQueryViewModel, ClientDTO>();
+                cfg.CreateMap<ClientDTO, ClientQueryViewModel>();
             });
             IMapper mapper = configuration.CreateMapper();
-            // new SERService().GetSERByID(4);
-            //Transforma o ClienteInsertViewModel em um ClienteDTO
-            List<ClientQueryViewModel> clientQueryViews =
-                mapper.Map<List<ClientQueryViewModel>>(response.Data);
-            ViewBag.Clients = clientQueryViews;
-            return View();
+            List<ClientQueryViewModel> dados = mapper.Map<List<ClientQueryViewModel>>(response.Data);
+            return View(dados);
         }
         public IActionResult BuscarporCpf()
         {
@@ -76,6 +76,27 @@ namespace SuperMarketPresentationLayer.Controllers
             try
             {
                 await this._clientService.Insert(dto);
+                return RedirectToAction("Index", "Client");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Erros = ex.Message;
+            }
+            return View();
+        }
+        public async Task<IActionResult> Edit(ClientUpdateViewModel viewModel)
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<ClientUpdateViewModel, ClientDTO>();
+            });
+            IMapper mapper = configuration.CreateMapper();
+            // new SERService().GetSERByID(4);
+            //Transforma o ClienteInsertViewModel em um ClienteDTO
+            ClientDTO dto = mapper.Map<ClientDTO>(viewModel);
+            try
+            {
+                await this._clientService.Update(dto);
                 return RedirectToAction("Index", "Client");
             }
             catch (Exception ex)

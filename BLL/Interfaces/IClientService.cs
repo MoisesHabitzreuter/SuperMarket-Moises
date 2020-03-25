@@ -10,6 +10,7 @@ namespace BLL.Interfaces
     public interface IClientService
     {
         Task<Response> Insert(ClientDTO client);
+        Task<Response> Update(ClientDTO client);
         Task<Response> GetClient(int page, int size);
         Task<DataResponse<List<ClientDTO>>> GetClient();
         Task<DataResponse<ClientDTO>> GetClientByCPF(string cpf);

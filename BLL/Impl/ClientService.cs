@@ -125,7 +125,33 @@ namespace BLL.Impl
             }
 
         }
-        
+
+        public async Task<Response> Update(ClientDTO client)
+        {
+            Response response = new Response();
+            response.Errors = Validate(client);
+            if (response.Errors.Count != 0)
+            {
+                response.Success = false;
+                return response;
+            }
+            else
+            {
+                try
+                {
+                    await _clientRepository.Update(client);
+                    response.Success = true;
+                    return response;
+                }
+                catch (Exception ex)
+                {
+                    response.Errors.Add("Erro no banco contate o adm");
+                    response.Success = false;
+                    File.WriteAllText("Log.txt", ex.Message);
+                    return response;
+                }
+            }
+        }
     }
 }
 
