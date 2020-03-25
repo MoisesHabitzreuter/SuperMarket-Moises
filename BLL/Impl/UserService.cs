@@ -118,6 +118,34 @@ namespace BLL.Impl
                 throw;
             }
         }
+
+        public async Task<Response> Update(UserDTO user)
+        {
+            Response response = new Response();
+
+            response.Errors = Validate(user);
+
+            if (response.Errors.Count != 0)
+            {
+                response.Success = false;
+                return response;
+            }
+
+            try
+            {
+                await this._userRepository.Update(user);
+
+                response.Success = true;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Errors.Add("Erro no banco contate o adm");
+                response.Success = false;
+                File.WriteAllText("Log.txt", ex.Message);
+                return response;
+            }
+        }
     }
 }
 

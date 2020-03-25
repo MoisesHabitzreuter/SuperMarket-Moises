@@ -11,5 +11,6 @@ namespace BLL.Interfaces
     {
          Task<Response> Insert(BrandDTO brands);
          Task<DataResponse<List<BrandDTO>>> GetBrands();
+        
     }
 }

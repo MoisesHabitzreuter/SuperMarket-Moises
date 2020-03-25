@@ -13,5 +13,6 @@ namespace BLL.Interfaces
         Task<DataResponse<List<ProviderDTO>>> GetProvider();
         Task<DataResponse<ProviderDTO>> GetProviderbyCNPJ(string cnpj);
         Task<DataResponse<ProviderDTO>> GetProviderbyEmail(string email);
+        Task<Response> Update(ProviderDTO provider);
     }
 }

@@ -1,1 +1,2 @@
-An error occurred while updating the entries. See the inner exception for details.
+Cannot open database "SMarketWEB" requested by the login. The login failed.
+Login failed for user 'DESKTOP-MRA96UF\Moisés'.
