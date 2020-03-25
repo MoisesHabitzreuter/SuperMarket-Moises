@@ -13,5 +13,6 @@ namespace BLL.Interfaces
         Task<DataResponse<List<UserDTO>>> GetUser();
         Task<Response> Authenticate(string email, string passWord);
         Task<DataResponse<UserDTO>> GetUserByEmail(string email);
+        Task<Response> Update(UserDTO user);
     }
 }

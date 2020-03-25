@@ -135,23 +135,23 @@ namespace BLL.Impl
                 response.Success = false;
                 return response;
             }
-            else
+
+            try
             {
-                try
-                {
-                    await _clientRepository.Update(client);
-                    response.Success = true;
-                    return response;
-                }
-                catch (Exception ex)
-                {
-                    response.Errors.Add("Erro no banco contate o adm");
-                    response.Success = false;
-                    File.WriteAllText("Log.txt", ex.Message);
-                    return response;
-                }
+                await _clientRepository.Update(client);
+
+                response.Success = true;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Errors.Add("Erro no banco contate o adm");
+                response.Success = false;
+                File.WriteAllText("Log.txt", ex.Message);
+                return response;
             }
         }
+    }
     }
 }
 
