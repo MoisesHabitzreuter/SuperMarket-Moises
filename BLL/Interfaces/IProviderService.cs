@@ -11,6 +11,7 @@ namespace BLL.Interfaces
     {
         Task<Response> Insert(ProviderDTO provider);
         Task<DataResponse<List<ProviderDTO>>> GetProvider();
+        Task<DataResponse<ProviderDTO>> GetProviderByID(int id);
         Task<DataResponse<ProviderDTO>> GetProviderbyCNPJ(string cnpj);
         Task<DataResponse<ProviderDTO>> GetProviderbyEmail(string email);
         Task<Response> Update(ProviderDTO provider);

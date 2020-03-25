@@ -16,6 +16,12 @@ namespace DAL.Impl
         {
             _context = context;
         }
+
+        public async Task<ProductDTO> GetProductByID(int id)
+        {
+            return await _context.Products.FirstOrDefaultAsync(c => c.ID == id);
+        }
+
         public async Task<List<ProductDTO>> GetProducts()
         {
             return await _context.Products.ToListAsync();

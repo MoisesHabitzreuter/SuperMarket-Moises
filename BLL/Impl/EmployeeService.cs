@@ -73,6 +73,23 @@ namespace BLL.Impl
             }
         }
 
+        public async Task<DataResponse<EmployeeDTO>> GetEmployeeByID(int id)
+        {
+            DataResponse<EmployeeDTO> response = new DataResponse<EmployeeDTO>();
+            try
+            {
+                response.Success = true;
+                response.Data = await _employeeRepository.GetEmployeeByID(id);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                File.WriteAllText("Log.txt", ex.Message);
+                return response;
+            }
+        }
+
         public async Task<Response> Insert(EmployeeDTO employee)
         {
             Response response = new Response();

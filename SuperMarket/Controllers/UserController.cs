@@ -48,8 +48,6 @@ namespace SuperMarketPresentationLayer.Controllers
                 cfg.CreateMap<UserDTO, UserQueryViewModel>();
             });
             IMapper mapper = configuration.CreateMapper();
-            // new SERService().GetSERByID(4);
-            //Transforma o ClienteInsertViewModel em um ClienteDTO
             List<UserQueryViewModel> userqueryviewmodel =
                 mapper.Map<List<UserQueryViewModel>>(sales);
             ViewBag.Users = userqueryviewmodel;
@@ -69,8 +67,6 @@ namespace SuperMarketPresentationLayer.Controllers
                 cfg.CreateMap<UserDTO, UserQueryViewModel>();
             });
             IMapper mapper = configuration.CreateMapper();
-            // new SERService().GetSERByID(4);
-            //Transforma o ClienteInsertViewModel em um ClienteDTO
             List<UserQueryViewModel> userqueryviewmodel =
                 mapper.Map<List<UserQueryViewModel>>(response.Data);
             ViewBag.Users = userqueryviewmodel;
@@ -90,14 +86,13 @@ namespace SuperMarketPresentationLayer.Controllers
                 var props = new AuthenticationProperties();
                 HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, props).Wait();
                 ViewBag.UsuarioLogado = true;
-                return RedirectToAction("Insert", "Category");
+                return RedirectToAction("Buscar", "User");
             }
             else
             {
                 return View();
             }
         }
-
         [HttpPost]
         public async Task<IActionResult> Insert(UserInsertViewModel viewmodel)
         {
@@ -106,13 +101,11 @@ namespace SuperMarketPresentationLayer.Controllers
                 cfg.CreateMap<UserInsertViewModel, UserDTO>();
             });
             IMapper mapper = configuration.CreateMapper();
-            // new SERService().GetSERByID(4);
-            //Transforma o ClienteInsertViewModel em um ClienteDTO
             UserDTO dto = mapper.Map<UserDTO>(viewmodel);
             try
             {
                 await _userService.Insert(dto);
-                return RedirectToAction("Index", "Category");
+                return RedirectToAction("Buscar", "User");
             }
             catch (Exception ex)
             {
@@ -120,25 +113,30 @@ namespace SuperMarketPresentationLayer.Controllers
             }
             return View();
         }
-        public IActionResult Update()
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            DataResponse<UserDTO> response = await _userService.GetUserByID(id);
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<UserDTO, UserUpdateViewModel>();
+            });
+            IMapper mapper = configuration.CreateMapper();
+            return View(mapper.Map<UserUpdateViewModel>(response.Data));
         }
         [HttpPost]
-        public async Task<IActionResult> Update(UserUpdateViewModel viewModel)
+        public async Task<IActionResult> Edit(int id, UserUpdateViewModel viewModel)
         {
             var configuration = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<UserUpdateViewModel, UserDTO>();
             });
             IMapper mapper = configuration.CreateMapper();
-            // new SERService().GetSERByID(4);
-            //Transforma o ClienteInsertViewModel em um ClienteDTO
             UserDTO dto = mapper.Map<UserDTO>(viewModel);
+            dto.ID = id;
             try
             {
                 await _userService.Update(dto);
-                return RedirectToAction("Index", "Client");
+                return RedirectToAction("Buscar", "User");
             }
             catch (Exception ex)
             {

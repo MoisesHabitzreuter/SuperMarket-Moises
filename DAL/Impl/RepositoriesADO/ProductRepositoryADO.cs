@@ -1,5 +1,6 @@
 ﻿using DAL.Interfaces;
 using DTO;
+using DTO.Responses;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,33 @@ namespace DAL.Impl
         {
             this._options = options;
         }
+
+        public async Task<ProductDTO> GetProductByID(int id)
+        {
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString = _options.ConnectionString;
+            SqlCommand command = new SqlCommand();
+            command.CommandText = "SELECT * FROM PRODUCTS WHERE ID = @ID";
+            command.Connection = connection;
+            command.Parameters.AddWithValue("@ID", id);
+            SqlDataReader reader = command.ExecuteReader();
+            if (await reader.ReadAsync())
+            {
+                ProductDTO product = new ProductDTO(Convert.ToInt32(reader["ID"]),
+                                      (string)reader["DESCRIPTION"],
+                                      (int)reader["BRANDID"],
+                                      (int)reader["PROVIDERID"],
+                                      (double)reader["PRICE"],
+                                      (bool)reader["ISACTIVE"]);
+
+                return product;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public async Task<List<ProductDTO>> GetProducts()
         {
             SqlConnection connection = new SqlConnection();

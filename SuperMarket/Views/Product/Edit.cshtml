@@ -1,0 +1,73 @@
+﻿@model SuperMarketPresentationLayer.Models.Updates.ProductUpdateViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>ProductUpdateViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="BrandID" class="control-label"></label>
+                <select class="js-example-basic-single form-control" style="height:33px" name="BrandID">
+                    @foreach (var item in ViewBag.Brands.Data)
+                    {
+                        <option value="@item.ID" style="height: 33px;">@item.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="BrandID" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="ProviderID" class="control-label"></label>
+                <select class="js-example-basic-single form-control" name="ProviderID">
+                    @foreach (var item in ViewBag.Provider.Data)
+                    {
+                        <option value="@item.ID" style="height: 33px;">@item.FantasyName</option>
+                    }
+                </select>
+                <span asp-validation-for="ProviderID" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="CategoryID" class="control-label"></label>
+                <select class="js-example-basic-single form-control" name="CategoryID">
+                    @foreach (var item in ViewBag.Category.Data)
+                    {
+                        <option value="@item.ID" style="height: 33px;">@item.Name</option>
+                    }
+
+                </select>
+                <span asp-validation-for="CategoryID" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" type="number" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

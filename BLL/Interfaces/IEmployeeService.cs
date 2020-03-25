@@ -11,6 +11,7 @@ namespace BLL.Interfaces
     {
         Task<Response> Insert(EmployeeDTO employee);
         Task<DataResponse<List<EmployeeDTO>>> GetEmployee();
+        Task<DataResponse<EmployeeDTO>> GetEmployeeByID(int id);
         Task<DataResponse<EmployeeDTO>> GetEmployeeByCPF(string cpf);
         Task<DataResponse<EmployeeDTO>> GetEmployeeByEmail(string email);
         Task<Response> Update(EmployeeDTO dto);

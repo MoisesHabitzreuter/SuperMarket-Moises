@@ -10,6 +10,7 @@ namespace DAL.Interfaces
     {
         public Task Insert(ProviderDTO provider);
         public Task<List<ProviderDTO>> GetProviders();
+        public Task<ProviderDTO> GetProviderByID(int id);
         public Task<ProviderDTO> GetProviderByCNPJ(string cnpj);
         public Task<ProviderDTO> GetProviderByEmail(string email);
         public Task Update(ProviderDTO provider);

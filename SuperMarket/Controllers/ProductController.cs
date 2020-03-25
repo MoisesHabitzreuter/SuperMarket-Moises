@@ -9,6 +9,7 @@ using DTO;
 using DTO.Responses;
 using Microsoft.AspNetCore.Mvc;
 using SuperMarketPresentationLayer.Models;
+using SuperMarketPresentationLayer.Models.Updates;
 
 namespace SuperMarketPresentationLayer.Controllers
 {
@@ -51,28 +52,7 @@ namespace SuperMarketPresentationLayer.Controllers
             List<ProductQueryViewModel> dados = mapper.Map<List<ProductQueryViewModel>>(response.Data);
             return View(dados);
         }
-     //   public IActionResult BuscarporMarca()
-      //  {
-      //      return View();
-      //  }
-      //  [HttpPost]
-    // public async Task<IActionResult> Buscarpormarca(ProductQueryViewModel viewmodel)
-       // {
-            //todo:Verificar este método
-         //   DataResponse<ProductDTO> response = await this._productService.GetProductsByCategory();
-            //todo: kkkkkk html
-          //  var configuration = new MapperConfiguration(cfg =>
-          //  {
-          //      cfg.CreateMap<ProductDTO, ProductQueryViewModel>();
-          //  });
-         //   IMapper mapper = configuration.CreateMapper();
-         //   // new SERService().GetSERByID(4);
-         //   //Transforma o ClienteInsertViewModel em um ClienteDTO
-         //   List<ProductQueryViewModel> productviewmodel =
-         //       mapper.Map<List<ProductQueryViewModel>>(response.Data);
-         //   ViewBag.Products = productviewmodel;
-         //   return View();
-      //  }
+   
         [HttpPost]
         public async Task<IActionResult> Buscarporcategoria(ProductQueryViewModel viewmodel)
         {
@@ -90,10 +70,8 @@ namespace SuperMarketPresentationLayer.Controllers
             ViewBag.Brands = await _brandService.GetBrands();
             ViewBag.Provider = await _providerService.GetProvider();
             ViewBag.Category = await _categoryService.GetCategory();
-
             return View();
         }
-
         [HttpPost]
         public async Task<IActionResult> Insert(ProductInsertViewModel viewmodel)
         {
@@ -102,40 +80,42 @@ namespace SuperMarketPresentationLayer.Controllers
                 cfg.CreateMap<ProductInsertViewModel, ProductDTO>();
             });
             IMapper mapper = configuration.CreateMapper();
-            // new SERService().GetSERByID(4);
-            //Transforma o ClienteInsertViewModel em um ClienteDTO
             ProductDTO dto = mapper.Map<ProductDTO>(viewmodel);
             try
             {
                 await _productService.Insert(dto);
-                return RedirectToAction("Index", "Category");
+                return RedirectToAction("Buscar", "Product");
             }
             catch (Exception ex)
             {
                 ViewBag.Erros = ex.Message;
             }
             return View();
-            
         }
-        public IActionResult Update()
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            DataResponse<ProductDTO> response = await _productService.GetProductByID(id);
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<ProductDTO, ProductUpdateViewModel>();
+            });
+            IMapper mapper = configuration.CreateMapper();
+            return View(mapper.Map<ProductUpdateViewModel>(response.Data));
         }
         [HttpPost]
-        public async Task<IActionResult> Update(ProductInsertViewModel viewModel)
+        public async Task<IActionResult> Edit(int id, ProductUpdateViewModel viewModel)
         {
             var configuration = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<ProductInsertViewModel, ProductDTO>();
+                cfg.CreateMap<ProductUpdateViewModel, ProductDTO>();
             });
             IMapper mapper = configuration.CreateMapper();
-            // new SERService().GetSERByID(4);
-            //Transforma o ClienteInsertViewModel em um ClienteDTO
             ProductDTO dto = mapper.Map<ProductDTO>(viewModel);
+            dto.ID = id;
             try
             {
                 await _productService.Update(dto);
-                return RedirectToAction("Index", "Client");
+                return RedirectToAction("Buscar", "Product");
             }
             catch (Exception ex)
             {

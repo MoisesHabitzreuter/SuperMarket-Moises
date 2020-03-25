@@ -146,6 +146,23 @@ namespace BLL.Impl
                 return response;
             }
         }
+
+        public async Task<DataResponse<UserDTO>> GetUserByID(int id)
+        {
+            DataResponse<UserDTO> response = new DataResponse<UserDTO>();
+            try
+            {
+                response.Success = true;
+                response.Data = await _userRepository.GetUserByID(id);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                await File.AppendAllTextAsync("Log.txt", ex.Message);
+                return response;
+            }
+        }
     }
 }
 

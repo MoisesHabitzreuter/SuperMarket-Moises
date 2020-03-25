@@ -39,11 +39,6 @@ namespace SuperMarketPresentationLayer.Controllers
             List<ProviderQueryViewModel> dados = mapper.Map<List<ProviderQueryViewModel>>(response.Data);
             return View(dados);
         }
-        public IActionResult BuscarporCNPJ()
-        {
-            return View();
-        }
-        [HttpPost]
         public async Task<IActionResult> BuscarporCNPJ(ProviderQueryViewModel viewmodel)
         {
             DataResponse<ProviderDTO> response = await _providerService.GetProviderbyCNPJ(viewmodel.CNPJ);
@@ -60,11 +55,6 @@ namespace SuperMarketPresentationLayer.Controllers
             ViewBag.Providers = providerviewmodel;
             return View();
         }
-        public IActionResult BuscarporEmail()
-        {
-            return View();
-        }
-        [HttpPost]
         public async Task<IActionResult> BuscarporEmail(ProviderQueryViewModel viewmodel)
         {
             DataResponse<ProviderDTO> response = await _providerService.GetProviderbyEmail(viewmodel.Email);
@@ -95,7 +85,7 @@ namespace SuperMarketPresentationLayer.Controllers
             try
             {
                 await _providerService.Insert(dto);
-                return RedirectToAction("Index", "Category");
+                return RedirectToAction("Buscar", "Provider");
             }
             catch (Exception ex)
             {
@@ -103,25 +93,30 @@ namespace SuperMarketPresentationLayer.Controllers
             }
             return View();
         }
-        public IActionResult Update()
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            DataResponse<ProviderDTO> response = await _providerService.GetProviderByID(id);
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<ProviderDTO, ProviderUpdateViewModel>();
+            });
+            IMapper mapper = configuration.CreateMapper();
+            return View(mapper.Map<ProviderUpdateViewModel>(response.Data));
         }
         [HttpPost]
-        public async Task<IActionResult> Update(ProviderUpdateViewModel viewModel)
+        public async Task<IActionResult> Edit(int id, ProviderUpdateViewModel viewModel)
         {
             var configuration = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<ProviderUpdateViewModel, ProviderDTO>();
             });
             IMapper mapper = configuration.CreateMapper();
-            // new SERService().GetSERByID(4);
-            //Transforma o ClienteInsertViewModel em um ClienteDTO
             ProviderDTO dto = mapper.Map<ProviderDTO>(viewModel);
+            dto.ID = id;
             try
             {
                 await _providerService.Update(dto);
-                return RedirectToAction("Index", "Client");
+                return RedirectToAction("Buscar", "Provider");
             }
             catch (Exception ex)
             {
@@ -130,6 +125,6 @@ namespace SuperMarketPresentationLayer.Controllers
             return View();
         }
     }
-
-
 }
+
+

@@ -46,5 +46,10 @@ namespace DAL.Impl
         {
             return await _context.Providers.ToListAsync();
         }
+
+        public async Task<ProviderDTO> GetProviderByID(int id)
+        {
+            return await this._context.Providers.FirstOrDefaultAsync(c => c.ID == id);
+        }
     }
 }

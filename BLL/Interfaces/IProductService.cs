@@ -11,6 +11,7 @@ namespace BLL.Interfaces
     {
         Task<Response> Insert(ProductDTO product);
         Task<DataResponse<List<ProductDTO>>> GetProduct();
+        Task<DataResponse<ProductDTO>> GetProductByID(int id);
         Task<DataResponse<List<ProductDTO>>> GetProductsByCategory(int category);
         Task<Response> Update(ProductDTO product);
         

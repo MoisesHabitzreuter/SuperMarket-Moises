@@ -31,6 +31,11 @@ namespace DAL.Impl
             return await _context.Users.FirstOrDefaultAsync(c => c.Email == email);
         }
 
+        public async Task<UserDTO> GetUserByID(int id)
+        {
+            return await _context.Users.FirstOrDefaultAsync(c => c.ID == id);
+        }
+
         public async Task<List<UserDTO>> GetUsers()
         {
             return await this._context.Users.ToListAsync();

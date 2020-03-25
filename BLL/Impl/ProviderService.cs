@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Impl
 {
-    public class ProviderService : IProviderService,IService<ProviderDTO>
+    public class ProviderService : IProviderService, IService<ProviderDTO>
     {
 
         private IProviderRepository _providerRepository;
@@ -151,6 +151,23 @@ namespace BLL.Impl
             catch (Exception ex)
             {
                 response.Errors.Add("Erro no banco contate o adm");
+                response.Success = false;
+                File.WriteAllText("Log.txt", ex.Message);
+                return response;
+            }
+        }
+
+        public async Task<DataResponse<ProviderDTO>> GetProviderByID(int id)
+        {
+            DataResponse<ProviderDTO> response = new DataResponse<ProviderDTO>();
+            try
+            {
+                response.Success = true;
+                response.Data = await _providerRepository.GetProviderByID(id);
+                return response;
+            }
+            catch (Exception ex)
+            {
                 response.Success = false;
                 File.WriteAllText("Log.txt", ex.Message);
                 return response;

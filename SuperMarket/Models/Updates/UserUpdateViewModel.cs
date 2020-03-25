@@ -17,5 +17,7 @@ namespace SuperMarketPresentationLayer.Models.Updates
         public string Name { get; set; }
         [Required(ErrorMessage = "A senha do usuario deve ser informado")]
         public string Password { get; set; }
+        [Required(ErrorMessage = "As senhas nao coincidem")]
+        public string ConfirmPassword { get; set; }
     }
 }

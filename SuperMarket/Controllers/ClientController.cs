@@ -58,7 +58,6 @@ namespace SuperMarketPresentationLayer.Controllers
             ViewBag.Clients = categoriasViewModel;
             return View();
         }
-
         public async Task<IActionResult> Buscar(ClientQueryViewModel viewModel)
         {
             DataResponse<List<ClientDTO>> response = await _clientService.GetClient();
@@ -91,7 +90,7 @@ namespace SuperMarketPresentationLayer.Controllers
             try
             {
                 await this._clientService.Insert(dto);
-                return RedirectToAction("Index", "Client");
+                return RedirectToAction("Buscar", "Client");
             }
             catch (Exception ex)
             {

@@ -93,6 +93,43 @@ namespace DAL.Impl
             }
         }
 
+        public async Task<UserDTO> GetUserByID(int id)
+        {
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString = _options.ConnectionString;
+            SqlCommand command = new SqlCommand();
+            command.CommandText = "SELECT * FROM USERS WHERE ID = @ID";
+            command.Connection = connection;
+            command.Parameters.AddWithValue("@ID", id);
+            try
+            {
+                await connection.OpenAsync();
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    UserDTO user = new UserDTO(Convert.ToInt32(reader["ID"]),
+                                       (string)reader["NAME"],
+                                       (string)reader["EMAIL"],
+                                       (Permissions)reader["PERMISSIONS"],
+                                       (bool)reader["ISACTIVE"]);
+                    return user;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                File.WriteAllText("log.txt", ex.Message);
+                return null;
+            }
+            finally
+            {
+                await connection.DisposeAsync();
+            }
+        }
+
         public async Task<List<UserDTO>> GetUsers()
         {
             SqlConnection connection = new SqlConnection();

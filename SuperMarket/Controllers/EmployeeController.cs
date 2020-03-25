@@ -43,14 +43,6 @@ namespace SuperMarketPresentationLayer.Controllers
             ViewBag.Employees = employeeviewmodel;
             return View();
         }
-        public IActionResult Buscarporrg()
-        {
-            return View();
-        }
-        public IActionResult Buscarporemail()
-        {
-            return View();
-        }
         public async Task<IActionResult> Buscarporemail(string email)
         {
             DataResponse<EmployeeDTO> response = await this._employeeService.GetEmployeeByEmail(email);
@@ -106,7 +98,7 @@ namespace SuperMarketPresentationLayer.Controllers
             try
             {
                 await _employeeService.Insert(dto);
-                return RedirectToAction("Index", "Client");
+                return RedirectToAction("Buscar", "Employee");
             }
             catch (Exception ex)
             {
@@ -114,25 +106,30 @@ namespace SuperMarketPresentationLayer.Controllers
             }
             return View();
         }
-        public IActionResult Update()
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            DataResponse<EmployeeDTO> response = await _employeeService.GetEmployeeByID(id);
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<EmployeeDTO, EmployeeUpdateViewModel>();
+            });
+            IMapper mapper = configuration.CreateMapper();
+            return View(mapper.Map<EmployeeUpdateViewModel>(response.Data));
         }
         [HttpPost]
-        public async Task<IActionResult> Update(EmployeeUpdateViewModel viewModel)
+        public async Task<IActionResult> Edit(int id, EmployeeUpdateViewModel viewModel)
         {
             var configuration = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<EmployeeUpdateViewModel, EmployeeDTO>();
             });
             IMapper mapper = configuration.CreateMapper();
-            // new SERService().GetSERByID(4);
-            //Transforma o ClienteInsertViewModel em um ClienteDTO
             EmployeeDTO dto = mapper.Map<EmployeeDTO>(viewModel);
+            dto.ID = id;
             try
             {
                 await _employeeService.Update(dto);
-                return RedirectToAction("Index", "Client");
+                return RedirectToAction("Buscar", "Provider");
             }
             catch (Exception ex)
             {

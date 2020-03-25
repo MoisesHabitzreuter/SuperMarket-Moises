@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Impl
 {
-    public class ProductService : IProductService,IService<ProductDTO>
+    public class ProductService : IProductService, IService<ProductDTO>
     {
         
         private IProductRepository _productRepository;
@@ -123,6 +123,24 @@ namespace BLL.Impl
             }
             return errors;
         }
+
+        public async Task<DataResponse<ProductDTO>> GetProductByID(int id)
+        {
+            DataResponse<ProductDTO> response = new DataResponse<ProductDTO>();
+            try
+            {
+                response.Success = true;
+                response.Data = await _productRepository.GetProductByID(id);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                await File.AppendAllTextAsync("Log.txt", ex.Message);
+                return response;
+            }
+        }
+        
     }
 }
 

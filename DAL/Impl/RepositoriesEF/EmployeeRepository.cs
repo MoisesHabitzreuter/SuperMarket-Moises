@@ -27,6 +27,11 @@ namespace DAL.Impl
             return await _context.Employees.FirstOrDefaultAsync(c => c.Email == email);
         }
 
+        public async Task<EmployeeDTO> GetEmployeeByID(int id)
+        {
+            return await _context.Employees.FirstOrDefaultAsync(c => c.ID == id);
+        }
+
         public async Task<EmployeeDTO> GetEmployeeByRG(string rg)
         {
             return await _context.Employees.FirstOrDefaultAsync(c => c.RG == rg);
