@@ -102,6 +102,32 @@ namespace SuperMarketPresentationLayer.Controllers
             }
             return View();
         }
+        public IActionResult Update()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Update(ProviderUpdateViewModel viewModel)
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<ProviderUpdateViewModel, ProviderDTO>();
+            });
+            IMapper mapper = configuration.CreateMapper();
+            // new SERService().GetSERByID(4);
+            //Transforma o ClienteInsertViewModel em um ClienteDTO
+            ProviderDTO dto = mapper.Map<ProviderDTO>(viewModel);
+            try
+            {
+                await _providerService.Update(dto);
+                return RedirectToAction("Index", "Client");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Erros = ex.Message;
+            }
+            return View();
+        }
     }
 
 
