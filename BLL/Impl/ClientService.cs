@@ -151,8 +151,26 @@ namespace BLL.Impl
                 return response;
             }
         }
+
+        public async Task<DataResponse<ClientDTO>> GetClientByID(int id)
+        {
+            DataResponse<ClientDTO> response = new DataResponse<ClientDTO>();
+            try
+            {
+                response.Success = true;
+                response.Data = await _clientRepository.GetClientsByID(id);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Errors.Add("Erro no banco contate o adm");
+                response.Success = false;
+                File.WriteAllText("Log.txt", ex.Message);
+                return response;
+            }
+        }
     }
-    }
+    
 }
 
     

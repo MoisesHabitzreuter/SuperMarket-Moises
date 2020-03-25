@@ -9,6 +9,7 @@ using DTO;
 using DTO.Responses;
 using Microsoft.AspNetCore.Mvc;
 using SuperMarketPresentationLayer.Models;
+using SuperMarketPresentationLayer.Models.Updates;
 
 namespace SuperMarketPresentationLayer.Controllers
 {

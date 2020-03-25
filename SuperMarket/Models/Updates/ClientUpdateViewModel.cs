@@ -22,8 +22,12 @@ namespace SuperMarketPresentationLayer.Models.Updates
         public string RG { get; set; }
         [Required(ErrorMessage = "O telefone do cliente deve ser informado")]
         public string Phone { get; set; }
+        [Required(ErrorMessage = "A data de nascimento do cliente deve ser informado")]
+        public DateTime DateBirth { get; set; }
         [Required(ErrorMessage = "A senha deve ser informada deve ser informado")]
         [StringLength(maximumLength: 20, ErrorMessage = "A senha deve conter entre 2 e 70 caracteres", MinimumLength = 6)]
         public string Password { get; set; }
+        [Required(ErrorMessage = "As senhas não coincidem")]
+        public string ConfirmPassword { get; set; }
     }
 }

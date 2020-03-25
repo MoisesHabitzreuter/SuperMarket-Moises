@@ -28,8 +28,9 @@ namespace DAL.Impl
 
         public async Task Update(ClientDTO client)
         {
-            _context.Clients.Update(client);
+             _context.Clients.Update(client);
             await _context.SaveChangesAsync();
+
         }
 
         public async Task<List<ClientDTO>> GetClients()
@@ -40,6 +41,11 @@ namespace DAL.Impl
         public async Task<ClientDTO> GetClientsByCPF(string cpf)
         {
             return await _context.Clients.FirstOrDefaultAsync(c => c.CPF == cpf);
+        }
+
+        public async Task<ClientDTO> GetClientsByID(int id)
+        {
+            return await _context.Clients.FirstOrDefaultAsync(c => c.ID == id);
         }
     }
 }

@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SuperMarketPresentationLayer.Models;
+using SuperMarketPresentationLayer.Models.Updates;
 
 namespace SuperMarketPresentationLayer.Controllers
 {

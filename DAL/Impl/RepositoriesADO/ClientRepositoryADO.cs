@@ -86,6 +86,34 @@ namespace DAL.Impl
             }
         }
 
+        public async Task<ClientDTO> GetClientsByID(int id)
+        {
+            SqlConnection connection = new SqlConnection();
+            connection.ConnectionString = _options.ConnectionString;
+            SqlCommand command = new SqlCommand();
+            command.CommandText = "SELECT * FROM CLIENTS WHERE ID = @ID";
+            command.Connection = connection;
+            command.Parameters.AddWithValue("@ID", id);
+            SqlDataReader reader = command.ExecuteReader();
+            if (await reader.ReadAsync())
+            {
+                ClientDTO client = new ClientDTO(Convert.ToInt32(reader["ID"]),
+                      (string)reader["NAME"],
+                      (string)reader["CPF"],
+                      (string)reader["EMAIL"],
+                      (string)reader["RG"],
+                      (string)reader["PHONE"],
+                      (DateTime)reader["DATEBIRTH"],
+                      (bool)reader["ISACTIVE"]);
+
+                return client;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public async Task Insert(ClientDTO client)
         {
             SqlConnection connection = new SqlConnection();

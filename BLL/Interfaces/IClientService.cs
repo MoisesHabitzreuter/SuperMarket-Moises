@@ -12,8 +12,8 @@ namespace BLL.Interfaces
         Task<Response> Insert(ClientDTO client);
         Task<Response> Update(ClientDTO client);
         Task<Response> GetClient(int page, int size);
+        Task<DataResponse<ClientDTO>> GetClientByID(int id);
         Task<DataResponse<List<ClientDTO>>> GetClient();
         Task<DataResponse<ClientDTO>> GetClientByCPF(string cpf);
-        Task<Response> Update(ClientDTO client);
     }
 }
